@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width" />
+    <title>合理使用同步异步接口</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css" />
+    <link rel="stylesheet" type="text/css" href="./css/box.css" />
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div>
+        <div id="wrap">
+            <div class='itemtitle'>1、获取App缓存</div>
+            <div class="clickbtn" tapmode="active" onclick="aycacheSize()">异步获取</div>
+            <div class="clickbtn" tapmode="active" onclick="sycacheSize()">同步获取</div>
+            <div class='itemtitle'>2、判断登录状态</div>
+            <div class="clickbtn" tapmode="active" onclick="isLoginAyc()">异步获取</div>
+            <div class="clickbtn" tapmode="active" onclick="isLoginSyc()">同步获取</div>
+            <div class='itemtitle'>3、使用fs模块同步接口</div>
+            <div class="clickbtn" tapmode="active" onclick="fsModule()">调用</div>
+            <div class='itemtitle'>4、使用signature模块同步接口</div>
+            <div class="clickbtn" tapmode="active" onclick="signatureModule()">调用</div>
+            <br>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    //同步调用
+    function sycacheSize() {
+        var size = api.getCacheSize({
+            sync: true
+        });
+        alert('缓存大小为：' + size + '字节');
+    }
+    //异步调用
+    function aycacheSize() {
+        api.getCacheSize(function(ret) {
+            var size = ret.size;
+            alert('缓存大小为：' + size + '字节');
+        });
+    }
+
+    //同步调用
+    function isLoginSyc() {
+        var login = api.getPrefs({
+            sync: true,
+            key: 'is_login'
+        });
+        alert('登录状态：' + (login ? '已登录' : '未登录'));
+    }
+    //异步调用
+    function isLoginAyc() {
+        api.getPrefs({
+            key: 'is_login'
+        }, isLoginCallback);
+    }
+
+    function isLoginCallback(ret) {
+        var login = ret.value;
+        alert('登录状态：' + (login ? '已登录' : '未登录'));
+    }
+
+    //同步调用
+    function fsModule() {
+        var fs = api.require('fs');
+        var ret = fs.existSync({
+            path: 'fs://file_test.txt'
+        });
+        alert(ret.exist ? '存在' : '不存在');
+    }
+
+    //同步调用
+    function signatureModule() {
+        var text = 'hello';
+        var signature = api.require('signature');
+        text = signature.md5Sync({
+            data: text
+        });
+        alert('加密字符串:hello\n' + '加密结果:' + text);
+    }
+</script>
+
+</html>

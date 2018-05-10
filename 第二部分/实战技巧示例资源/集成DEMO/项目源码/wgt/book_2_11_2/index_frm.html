@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+        <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+        <title>title</title>
+        <link rel="stylesheet" type="text/css" href="./css/api.css"/>
+        <style>
+            body {
+            }
+            .box {
+                margin: 10px;
+                border: 1px solid #81a9c3;
+                border-radius: 3px;
+                text-align: right;
+                background: #eeeeee;
+            }
+            .box .img{
+                float: left;
+                height: 40px;
+                width: 40px;
+            }
+            .box span {
+                border-radius: 3px;
+                background: lightgreen;
+                display: inline-block;
+                width: 40px;
+                height: 40px;
+                line-height: 40px;
+                text-align: center;
+            }
+            .box input {
+                background: #ffffff;
+                text-align: center;
+                width: 80px;
+            }
+        </style>
+    </head>
+    <body>
+        <p class="text">
+            用法一
+        </p>
+        <div id="box1">
+
+        </div>
+        <p id="text1" class="text">
+            数量：0
+        </p>
+        <br />
+        <p class="text">
+            用法二
+        </p>
+        <div id="box2">
+
+        </div>
+        <p id="text2" class="text">
+            数量：0
+        </p>
+    </body>
+    <script type="text/javascript" src="./script/api.js"></script>
+    <script type="text/javascript">
+        apiready = function() {
+            var str1='';
+            var str2 = '';
+            for (var i = 0; i<6;i++){
+                str1 += '<div class="box">'
+                            +'<img class="img" src="./image/index-doc.png" />'
+                            +'<span onclick="countMin1(this)" data-index="'+ (i+1) +'" tapmode >-</span>'
+                            +'<input type="text" id="count_text'+ (i+1) +'" value="0">'
+                            +'<span onclick="countAdd1(this)" data-index="'+ (i+1) +'" tapmode >+</span>'
+                        +'</div>';
+                str2 += '<div class="box">'
+                            +'<img class="img" src="./image/index-doc.png" />'
+                            +'<span onclick="countMin('+ (i+1) +')" tapmode >-</span>'
+                            +'<input type="text" id="count_text_'+ (i+1) +'" value="0">'
+                            +'<span onclick="countAdd('+ (i+1) +')" tapmode >+</span>'
+                        +'</div>';
+            }
+            $api.html($api.dom('#box1'), str1);
+            $api.html($api.dom('#box2'), str2);
+            api.parseTapmode();
+        };
+        function countNumbers1 () {
+            var num = 0;
+            for (var i = 0; i < 6; i++){
+                num += parseInt($api.val($api.dom('#count_text'+(i+1))))
+            }
+            $api.html($api.dom('#text1'), '数量：'+ num)
+        }
+        function countNumbers2 () {
+            var num = 0;
+            for (var i = 0; i < 6; i++){
+                num += _data[i+1]
+            }
+            $api.html($api.dom('#text2'), '数量：'+ num)
+        }
+        function countMin1(el) {
+            var index = $api.attr(el, 'data-index');
+            // 购物车减少商品数量
+            var currentCount = parseInt($api.val($api.dom('#count_text' + index))) || 0;
+            if (currentCount <= 0) {
+                currentCount = 0;
+            } else {
+                currentCount--;
+            }
+            $api.val($api.dom('#count_text' + index), currentCount);
+            countNumbers1();
+        }
+
+        function countAdd1(el) {
+            var index = $api.attr(el, 'data-index');
+            // 购物车增加商品数量
+            var currentCount = parseInt($api.val($api.dom('#count_text' + index))) || 0;
+            currentCount++;
+            $api.val($api.dom('#count_text' + index), currentCount);
+            countNumbers1();
+        }
+
+        // JavaScript部分
+        var data = [{
+            uid : 1,
+            count : 1
+        }];
+        var _data = {
+            1 : 0,
+            2 : 0,
+            3 : 0,
+            4 : 0,
+            5 : 0,
+            6 : 0
+        };
+        function countMin(uid) {
+            // 购物车减少商品数量
+            // 根据传入的uid找到源数据中的count
+            var currentCount = _data[uid];
+            if (currentCount <= 0) {
+                currentCount = 0;
+            } else {
+                currentCount--;
+            }
+            $api.val($api.dom('#count_text_'+uid), currentCount);
+            _data[uid] = currentCount;
+            countNumbers2();
+        }
+
+        function countAdd(uid) {
+            // 购物车增加商品数量
+            // 根据传入的uid找到源数据中的count
+            var currentCount = _data[uid];
+            currentCount++;
+            $api.val($api.dom('#count_text_'+uid), currentCount);
+            _data[uid] = currentCount;
+            countNumbers2();
+        }
+    </script>
+</html>

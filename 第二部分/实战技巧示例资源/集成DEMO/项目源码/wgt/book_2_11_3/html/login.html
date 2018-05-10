@@ -1,0 +1,101 @@
+<!doctype html>
+<html >
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"/>
+	<title>登录界面</title>
+	<link rel="stylesheet" type="text/css" href="../css/api.css" />
+  <link rel="stylesheet" type="text/css" href="../css/box.css" />
+  <script type="text/javascript" src="../script/public.js"></script>
+	<style type="text/css">
+		html,body{
+				height: 100%;
+		}
+		header {
+				font-size: 18px;
+				line-height: 44px;
+				text-align: center;
+				background-color: #81a9c3;
+				color: #000;
+				text-shadow: 1px 1px 1px #fff;
+		}
+		.header-item-left {
+				position: absolute;
+				left: 10px;
+				bottom: 0;
+				width: 44px;
+				height: 44px;
+				background: url(../../image/back.png) no-repeat center;
+				background-size: 20px 20px;
+		}
+		footer {
+				font-size: 14px;
+				line-height: 30px;
+				text-align: center;
+				background-color: #81a9c3;
+				color: #000;
+				text-shadow: 1px 1px 1px #fff;
+		}
+	</style>
+</head>
+<body class="flex-v">
+	<header>
+		<span id="header-title">登陆界面</span>
+	</header>
+	<section class="flex-1">
+		<div id="main">
+			<br>
+			<br>
+      <div class="clickbtn" tapmode="active" onclick="login()" >点击我登录</div>
+    </div>
+	</section>
+	<footer>Copyright &copy;<span id="year"></span></footer>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript">
+
+	function login(){
+		api.showProgress();
+		//模拟登录效果
+		setTimeout(loginSuccess, 2000);
+	}
+
+	apiready = function(){
+		// header 沉浸式修复
+		var header = $api.dom('header');
+		headerH = $api.fixStatusBar(header);
+		// footer Margin布局修复
+		var footer = $api.dom('footer');
+		footerH = $api.fixTabBar(footer);
+		// 定义footer文字
+		var year = $api.byId('year');
+		year.innerHTML = new Date().getFullYear();
+		//监听android设备物理back
+		api.addEventListener({
+			name:'keyback'
+		}, function(ret){
+			closeApp();
+		});
+	}
+
+	function loginSuccess(){
+		setPro('is_login', 'true');//存储登录状态
+		api.toast({msg:'登录成功!', global:true});
+		var jsfun = 'refreshData()';
+		api.sendEvent({//发送登录成功事件
+			name: 'login_success'
+		});
+		api.closeWin({
+			animation:{
+				type:'push',
+				duration:250
+			  }
+		});
+	}
+
+	function closeApp(){
+		api.closeWidget();
+	}
+
+</script>
+</html>

@@ -1,0 +1,104 @@
+<!doctype html>
+<html >
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>登录优化</title>
+	<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+  <script type="text/javascript" src="./script/public.js"></script>
+	<style type="text/css">
+		html,body{
+				height: 100%;
+		}
+		header {
+				font-size: 18px;
+				line-height: 44px;
+				text-align: center;
+				background-color: #81a9c3;
+				color: #000;
+				text-shadow: 1px 1px 1px #fff;
+		}
+		.header-item-left {
+				position: absolute;
+				left: 10px;
+				bottom: 0;
+				width: 44px;
+				height: 44px;
+				background: url(../../image/back.png) no-repeat center;
+				background-size: 20px 20px;
+		}
+		footer {
+				font-size: 14px;
+				line-height: 30px;
+				text-align: center;
+				background-color: #81a9c3;
+				color: #000;
+				text-shadow: 1px 1px 1px #fff;
+		}
+	</style>
+</head>
+<body class="flex-v">
+	<header>
+		<div class="header-item-left" tapmode="active" onclick="fnClickLeftItem()"></div>
+		<span id="header-title"></span>
+	</header>
+	<section class="flex-1">
+		<div id="main">
+						我是Home页
+		</div>
+	</section>
+	<footer>Copyright &copy;<span id="year"></span></footer>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript">
+	var headerH,footerH;
+	apiready = function(){
+			// header 沉浸式修复
+			var header = $api.dom('header');
+			headerH = $api.fixStatusBar(header);
+			// footer Margin布局修复
+			var footer = $api.dom('footer');
+			footerH = $api.fixTabBar(footer);
+			// 定义标题文字
+			var tTitle = 'root' === api.winName ? api.wgtParam.title:api.pageParam.title;
+			$api.byId('header-title').innerText = tTitle;
+			// 定义footer文字
+			var year = $api.byId('year');
+			year.innerHTML = new Date().getFullYear();
+
+			api.addEventListener({
+				name:'login_success'
+			}, function(ret){
+				//收到登录成功事件，刷新数据
+				refreshData();
+			});
+			if(checkLogin()){
+				//已登录状态，直接刷新数据
+				refreshData();
+			}
+	};
+
+
+	function fnClickLeftItem() {
+			'root' === api.winName ? api.closeWidget():api.closeWin();
+	}
+
+	function checkLogin(){
+		var login = getPro('is_login');
+		  if(!login){
+			//未登录，跳转登录页
+			api.openWin({
+			  name:'login',
+			  url:'./html/login.html'
+			});
+		  }
+		  return login;
+	}
+
+	function refreshData(){
+		$('main').innerHTML = '数据刷新成功！';
+	}
+
+</script>
+</html>
