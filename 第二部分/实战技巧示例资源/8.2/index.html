@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>城市选择器-3级</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css" />
+
+    <style>
+        body,
+        html {
+            height: 100%;
+            background-color: #FFF;
+            text-align: center;
+            font-size: 16px;
+            color: #212121;
+        }
+        header {
+            height: 44px;
+            line-height: 44px;
+            background-color: #03a9f4;
+            color: #FFF;
+        }
+        footer {
+            height: 49px;
+            line-height: 49px;
+            background-color: #FFF;
+            background-color: #E0474C;
+            color: #FFF;
+        }
+        ul {
+            margin: 20px;
+        }
+        li {
+            position: relative;
+            height: 49px;
+            line-height: 50px;
+            /*background-color: #EEE;*/
+        }
+        li:after {
+            content: "";
+            display: block;
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            width: 100%;
+            height: 1px;
+            background-color: #3D3D3D;
+            -webkit-transform: scale(1, 0.5);
+            transform: scale(1, 0.5);
+            -webkit-transform-origin: center bottom;
+            transform-origin: center bottom;
+        }
+        li.title {
+            font-weight: bold;
+        }
+        #mask {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(55,55,55,0.3);
+        }
+        .no-show {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="flex-box flex-column">
+    <header>APICloud 联动选择器 DEMO</header>
+    <ul>
+      <li class="title">选择的城市信息</li>
+      <li class="title">选择的省份</li>
+      <li id="province">辽宁省</li>
+      <li class="title">选择的城市</li>
+      <li id="city">沈阳市</li>
+      <li class="title">选择的市内行政区</li>
+      <li id="district">和平区</li>
+    </ul>
+    <div class="flex-1"></div>
+    <footer tapmode="" onclick="fnOpenSelectorPage();">打开选择器</footer>
+    <div id="mask" class="no-show"></div>
+</body>
+<script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript">
+    var UILinkedPicker; // 模块对象
+    var oSelectedData;  // 用户选择内容
+    apiready = function() {
+        // 沉浸式状态栏修复
+        var eHeader = $api.dom('header');
+        $api.fixStatusBar(eHeader);
+    };
+
+    function fnOpenSelectorPage() {  // 打开联动器页面
+        setTimeout(function(){
+            $api.removeCls($api.byId('mask'), 'no-show'); // 打开遮罩
+        },500);
+        api.openFrame({ // 打开选择器Frame页面
+            name: 'city3_selector_frm',
+            url: './html/city3_selector_frm.html',
+            rect: {
+                x: 0,
+                y: 0,
+                w: 'auto',
+                h: 'auto'
+            },
+            animation: {  // 设置底部弹出的窗口动画
+                type: 'movein',
+                subType: 'from_bottom',
+                duration: 500
+            },
+            pageParam: {  // 设置回调方法参数
+                cb_win: api.winName,
+                cb_frm: api.frameName,
+                cb_fun: 'fnExecteScriptByRemote'
+            }
+        });
+    }
+
+    /**
+     * 联动选择器远程回调处理方法，获取选择器的选择值
+     * @param  {[type]} url            联动器页面所在
+     * @param  {[Array]} pJSONData     页面传递数据
+     */
+    function fnExecteScriptByRemote( pJSONData ) {
+        fnCloseSheetFrame();
+        if('[object Array]' !== Object.prototype.toString.call(pJSONData)){
+            return;
+        }
+        var tArrData = pJSONData;
+        $api.byId('province').innerHTML = tArrData[0].value.name;
+        $api.byId('city').innerHTML = tArrData[1].value.name;
+        $api.byId('district').innerHTML = tArrData[2].value.name;
+    }
+
+    function fnCloseSheetFrame() {                  // 关闭联动选择器方法
+        $api.addCls($api.byId('mask'), 'no-show');  // 关闭遮罩
+        api.closeFrame({                            // 关闭选择器页面
+            name: 'city3_selector_frm'
+        });
+    }
+</script>
+
+</html>
