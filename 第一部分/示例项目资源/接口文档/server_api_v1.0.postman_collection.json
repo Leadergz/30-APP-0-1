@@ -1,0 +1,571 @@
+{
+	"info": {
+		"name": "APICloud书籍DEMO1API接口",
+		"_postman_id": "5fd62cd6-a8e1-e329-28ff-d342c01e3183",
+		"description": "APICloud 《30天 APP开发从0到1》 书籍第一部分配套Demo的 API接口",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "用户注册",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-APICloud-AppId",
+						"value": "A6067689558516"
+					},
+					{
+						"key": "X-APICloud-AppKey",
+						"value": "ea748d4ba21a3c5f861dbade4b98adacf7fa5b6c.1524848071825"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "broad123",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://d.apicloud.com/mcm/api/user",
+					"protocol": "https",
+					"host": [
+						"d",
+						"apicloud",
+						"com"
+					],
+					"path": [
+						"mcm",
+						"api",
+						"user"
+					]
+				},
+				"description": "用户注册"
+			},
+			"response": []
+		},
+		{
+			"name": "用户登录",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-APICloud-AppId",
+						"value": "A6067689558516"
+					},
+					{
+						"key": "X-APICloud-AppKey",
+						"value": "ea748d4ba21a3c5f861dbade4b98adacf7fa5b6c.1524848071825"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "broad123",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://d.apicloud.com/mcm/api/user/login",
+					"protocol": "http",
+					"host": [
+						"d",
+						"apicloud",
+						"com"
+					],
+					"path": [
+						"mcm",
+						"api",
+						"user",
+						"login"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "获取支持地区列表",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-APICloud-AppId",
+						"value": "A6067689558516"
+					},
+					{
+						"key": "X-APICloud-AppKey",
+						"value": "ea748d4ba21a3c5f861dbade4b98adacf7fa5b6c.1524848071825"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://d.apicloud.com/mcm/api/supportArea?filter={\"where\":{},\"skip\":0,\"limit\":50}",
+					"protocol": "http",
+					"host": [
+						"d",
+						"apicloud",
+						"com"
+					],
+					"path": [
+						"mcm",
+						"api",
+						"supportArea"
+					],
+					"query": [
+						{
+							"key": "filter",
+							"value": "{\"where\":{},\"skip\":0,\"limit\":50}",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "获取商品分类列表",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-APICloud-AppId",
+						"value": "A6067689558516"
+					},
+					{
+						"key": "X-APICloud-AppKey",
+						"value": "ea748d4ba21a3c5f861dbade4b98adacf7fa5b6c.1524848071825"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://d.apicloud.com/mcm/api/wareType",
+					"protocol": "http",
+					"host": [
+						"d",
+						"apicloud",
+						"com"
+					],
+					"path": [
+						"mcm",
+						"api",
+						"wareType"
+					]
+				},
+				"description": "获取商品分类列表"
+			},
+			"response": []
+		},
+		{
+			"name": "获取商品列表",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-APICloud-AppId",
+						"value": "A6067689558516"
+					},
+					{
+						"key": "X-APICloud-AppKey",
+						"value": "ea748d4ba21a3c5f861dbade4b98adacf7fa5b6c.1524848071825"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://d.apicloud.com/mcm/api/ware",
+					"protocol": "http",
+					"host": [
+						"d",
+						"apicloud",
+						"com"
+					],
+					"path": [
+						"mcm",
+						"api",
+						"ware"
+					]
+				},
+				"description": "获取商品列表"
+			},
+			"response": []
+		},
+		{
+			"name": "获取商品详情",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-APICloud-AppId",
+						"value": "A6067689558516"
+					},
+					{
+						"key": "X-APICloud-AppKey",
+						"value": "ea748d4ba21a3c5f861dbade4b98adacf7fa5b6c.1524848071825"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://d.apicloud.com/mcm/api/ware?filter={\"where\":{\"id\":\"56c94a0426f863e874c76caf\"},\"skip\":0,\"limit\":1,\"include\": [\"wareInfoPointer\"]}",
+					"protocol": "http",
+					"host": [
+						"d",
+						"apicloud",
+						"com"
+					],
+					"path": [
+						"mcm",
+						"api",
+						"ware"
+					],
+					"query": [
+						{
+							"key": "filter",
+							"value": "{\"where\":{\"id\":\"56c94a0426f863e874c76caf\"},\"skip\":0,\"limit\":1,\"include\": [\"wareInfoPointer\"]}",
+							"equals": true
+						}
+					]
+				},
+				"description": "获取商品详情"
+			},
+			"response": []
+		},
+		{
+			"name": "上传文件",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-APICloud-AppId",
+						"value": "A6067689558516"
+					},
+					{
+						"key": "X-APICloud-AppKey",
+						"value": "ea748d4ba21a3c5f861dbade4b98adacf7fa5b6c.1524848071825"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "filename",
+							"value": "icon",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"value": "",
+							"type": "file"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://d.apicloud.com/mcm/api/file",
+					"protocol": "https",
+					"host": [
+						"d",
+						"apicloud",
+						"com"
+					],
+					"path": [
+						"mcm",
+						"api",
+						"file"
+					]
+				},
+				"description": "上传文件"
+			},
+			"response": []
+		},
+		{
+			"name": "更改用户头像",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "8duCYaz6AIap4dpQpOXpGF0ram3OCbRDwKjIMAe8UvC8J3uVnobzDeWg5KsOjiVr"
+					},
+					{
+						"key": "X-APICloud-AppId",
+						"value": "A6067689558516"
+					},
+					{
+						"key": "X-APICloud-AppKey",
+						"value": "ea748d4ba21a3c5f861dbade4b98adacf7fa5b6c.1524848071825"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "avatar",
+							"value": "{\"url\": \"http://7y0hol.com1.z0.glb.clouddn.com/apicloud/69f4bd69a698b2fe955bd5a43392c38a.png\" }",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://d.apicloud.com/mcm/api/user/5ae35e4783b1f8c71ff3464b",
+					"protocol": "https",
+					"host": [
+						"d",
+						"apicloud",
+						"com"
+					],
+					"path": [
+						"mcm",
+						"api",
+						"user",
+						"5ae35e4783b1f8c71ff3464b"
+					]
+				},
+				"description": "更改用户头像"
+			},
+			"response": []
+		},
+		{
+			"name": "获取用户信息",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "8duCYaz6AIap4dpQpOXpGF0ram3OCbRDwKjIMAe8UvC8J3uVnobzDeWg5KsOjiVr"
+					},
+					{
+						"key": "X-APICloud-AppId",
+						"value": "A6067689558516"
+					},
+					{
+						"key": "X-APICloud-AppKey",
+						"value": "ea748d4ba21a3c5f861dbade4b98adacf7fa5b6c.1524848071825"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "https://d.apicloud.com/mcm/api/user/5ae35e4783b1f8c71ff3464b",
+					"protocol": "https",
+					"host": [
+						"d",
+						"apicloud",
+						"com"
+					],
+					"path": [
+						"mcm",
+						"api",
+						"user",
+						"5ae35e4783b1f8c71ff3464b"
+					]
+				},
+				"description": "获取用户信息"
+			},
+			"response": []
+		},
+		{
+			"name": "添加收获地址",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "8duCYaz6AIap4dpQpOXpGF0ram3OCbRDwKjIMAe8UvC8J3uVnobzDeWg5KsOjiVr"
+					},
+					{
+						"key": "X-APICloud-AppId",
+						"value": "A6067689558516"
+					},
+					{
+						"key": "X-APICloud-AppKey",
+						"value": "ea748d4ba21a3c5f861dbade4b98adacf7fa5b6c.1524848071825"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Broad\",\n\t\"mobile\": \"18812345678\",\n\t\"region\": \"北京市东城区\",\n\t\"address\": \"政府街与鼓楼南街交叉口西北100米\",\n\t\"house\": \"A1819\",\n\t\"type\": 0\n\t\"isDefault\": true\n\t\"user\": \"5ae35e4783b1f8c71ff3464b\"\n}"
+				},
+				"url": {
+					"raw": "https://d.apicloud.com/mcm/api/address",
+					"protocol": "https",
+					"host": [
+						"d",
+						"apicloud",
+						"com"
+					],
+					"path": [
+						"mcm",
+						"api",
+						"address"
+					]
+				},
+				"description": "添加收获地址"
+			},
+			"response": []
+		},
+		{
+			"name": "获取收获地址列表",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "yQ5wprM7AoFilKMNgYSK96Ir8ZGqKSMZfb9xUQBsZqagkSrSfPz7uc5MzW3EDJkx"
+					},
+					{
+						"key": "X-APICloud-AppId",
+						"value": "A6067689558516"
+					},
+					{
+						"key": "X-APICloud-AppKey",
+						"value": "ea748d4ba21a3c5f861dbade4b98adacf7fa5b6c.1524848071825"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://d.apicloud.com/mcm/api/address?filter={\"fields\": {}, \"where\": {\"user\":\"5ae35e4783b1f8c71ff3464b\" },\"skip\": 0,\"limit\": 20}",
+					"protocol": "http",
+					"host": [
+						"d",
+						"apicloud",
+						"com"
+					],
+					"path": [
+						"mcm",
+						"api",
+						"address"
+					],
+					"query": [
+						{
+							"key": "filter",
+							"value": "{\"fields\": {}, \"where\": {\"user\":\"5ae35e4783b1f8c71ff3464b\" },\"skip\": 0,\"limit\": 20}",
+							"equals": true
+						}
+					]
+				},
+				"description": "获取用户信息"
+			},
+			"response": []
+		},
+		{
+			"name": "更新收获地址",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "8duCYaz6AIap4dpQpOXpGF0ram3OCbRDwKjIMAe8UvC8J3uVnobzDeWg5KsOjiVr"
+					},
+					{
+						"key": "X-APICloud-AppId",
+						"value": "A6067689558516"
+					},
+					{
+						"key": "X-APICloud-AppKey",
+						"value": "ea748d4ba21a3c5f861dbade4b98adacf7fa5b6c.1524848071825"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Broad\",\n\t\"mobile\": \"18812345678\",\n\t\"region\": \"北京市东城区\",\n\t\"address\": \"政府街与鼓楼南街交叉口西北500米\",\n\t\"house\": \"A1820\",\n\t\"type\": 1\n\t\"isDefault\": true\n\t\"user\": \"5ae35e4783b1f8c71ff3464b\"\n}"
+				},
+				"url": {
+					"raw": "https://d.apicloud.com/mcm/api/address/5ae3729b6112a94d20ecafbf",
+					"protocol": "https",
+					"host": [
+						"d",
+						"apicloud",
+						"com"
+					],
+					"path": [
+						"mcm",
+						"api",
+						"address",
+						"5ae3729b6112a94d20ecafbf"
+					]
+				},
+				"description": "更新收获地址"
+			},
+			"response": []
+		},
+		{
+			"name": "删除收获地址",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "8duCYaz6AIap4dpQpOXpGF0ram3OCbRDwKjIMAe8UvC8J3uVnobzDeWg5KsOjiVr"
+					},
+					{
+						"key": "X-APICloud-AppId",
+						"value": "A6067689558516"
+					},
+					{
+						"key": "X-APICloud-AppKey",
+						"value": "ea748d4ba21a3c5f861dbade4b98adacf7fa5b6c.1524848071825"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://d.apicloud.com/mcm/api/address/5ae3729b6112a94d20ecafbf",
+					"protocol": "https",
+					"host": [
+						"d",
+						"apicloud",
+						"com"
+					],
+					"path": [
+						"mcm",
+						"api",
+						"address",
+						"5ae3729b6112a94d20ecafbf"
+					]
+				},
+				"description": "删除收获地址"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "63f49868-8073-4ae1-a921-4db6fdb5a23d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "36599572-f6c1-44e6-acd1-5323a9ff857b",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
