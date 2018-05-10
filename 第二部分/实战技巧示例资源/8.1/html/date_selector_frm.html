@@ -159,7 +159,7 @@
                 <div class="flex-1"></div>
             </div>
         </div>
-        <div class="cancel" tapmode="touched" onclick="fnCancleBtnTouched();">取消</div>
+        <div class="cancel" tapmode="touched" onclick="fnCancelBtnTouched();">取消</div>
     </div>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
@@ -305,7 +305,7 @@
     								页面点击事件
     ***************************************************/
     //取消按钮点击事件
-    function fnCancleBtnTouched() {
+    function fnCancelBtnTouched() {
         api.execScript({  // 调用上级页面方法来关闭选择器
             name: api.pageParam.cb_win,
             frameName: api.pageParam.cb_frm,
