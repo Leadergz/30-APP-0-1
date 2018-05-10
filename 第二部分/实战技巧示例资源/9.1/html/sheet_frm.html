@@ -1,0 +1,189 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"
+	/>
+	<meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+	<title>Hello APP</title>
+	<link rel="stylesheet" type="text/css" href="../css/api.css" />
+	<style>
+		html,
+		body {
+			height: 100%;
+			width: 100%;
+			background-color: rgba(0, 0, 0, 0);
+			text-align: center;
+		}
+
+		/* 遮罩 */
+
+		.mask {
+			box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(55, 55, 55, 0.3);
+		}
+
+		/* 点击效果 */
+
+		.mask .active {
+			background-color: rgb(230, 230, 230);
+		}
+
+		/* 底部弹出框 */
+
+		.sheet {
+			position: fixed;
+			bottom: -100%;
+			left: 5%;
+			width: 90%;
+			opacity: 0;
+			-webkit-transition-property: -webkit-transform, opacity, bottom;
+			transition-property: transform, opacity, bottom;
+		}
+
+		.sheet-content {
+			border-radius: 5px;
+			background-color: #fff;
+		}
+
+		.sheet-content-title {
+			color: #3c3c3c;
+			line-height: 50px;
+			font-size: 12px;
+		}
+
+		.sheet-content-button {
+			position: relative;
+			height: 50px;
+			color: rgb(40, 160, 154);
+			font-size: 16px;
+			line-height: 50px;
+		}
+
+		.sheet-content-button:after {
+			content: '';
+			display: block;
+			position: absolute;
+			left: 0;
+			top: 0;
+			height: 1px;
+			width: 100%;
+			background-color: #ccc;
+			-webkit-transform: scaleY(.5);
+			transform: scaleY(.5);
+			-webkit-transform-origin: center bottom;
+			transform-origin: center bottom;
+		}
+
+		.cancel {
+			border-radius: 4px;
+			margin: 15px 0;
+			height: 50px;
+			color: rgb(245, 4, 4);
+			line-height: 50px;
+			background-color: #fff;
+		}
+
+		/* 底部弹出动画 */
+
+		.sheet-show {
+			opacity: 1;
+			bottom: 0;
+			-webkit-transition-duration: 300ms;
+			transition-duration: 300ms;
+		}
+
+		.sheet-hide {
+			opacity: 0;
+			bottom: -100%;
+			-webkit-transition-duration: 300ms;
+			transition-duration: 300ms;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="mask" tapmode onclick="closeSheet()">
+		<div class="sheet">
+			<div class="sheet-content">
+				<div class="sheet-content-title">底部弹出框</div>
+				<div class="sheet-content-buttons">
+					<div class="sheet-content-button" tapmode="active" onclick="clickBtn(1)">复制</div>
+					<div class="sheet-content-button" tapmode="active" onclick="clickBtn(2)">黏贴</div>
+					<div class="sheet-content-button" tapmode="active" onclick="clickBtn(3)">收藏</div>
+				</div>
+			</div>
+			<div class="cancel" tapmode="active" onclick="closeSheet()">取消</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function () {
+		setShowMethod();
+		sheetAnimation('show'); //底部弹窗的动画
+		fnInit()
+	};
+	//初始化
+	function fnInit() {
+		//样式
+		if (api.pageParam.style) {
+			
+		}
+		//这里是自定义的按钮
+		if (api.pageParam.btn) {
+			var btn = api.pageParam.btn,
+				str = ''
+			for (var i = 0; i < btn.length; i++) {
+				str += '<div class="sheet-content-button" tapmode="active" onclick="clickBtn(' + i + ')">' + btn[i] + '</div>';
+			}
+			$api.html($api.dom('.sheet-content-buttons'), str);
+		}
+	}
+	function setShowMethod() {  // 设置显示方法
+		// 设置禁止 keyBack及滑动返回（跨页面远程调用）
+		api.execScript({
+			name: api.pageParam.cb_win,
+			frameName: api.pageParam.cb_frm,
+			script: api.pageParam.init_fun + '();'
+		});
+	}
+
+	function closeSheet() {//关闭底部弹出框
+		sheetAnimation('hide')//弹窗动画
+		setTimeout(function () {
+			api.closeFrame({
+				name: 'sheet_frm'
+			});
+		}, 200);
+	}
+
+	function sheetAnimation(state) {//底部弹窗动画
+		if (state) {
+			var sheet = $api.dom('.sheet');
+			switch (state) {
+				case 'show':
+					$api.addCls(sheet, 'sheet-show');
+					break;
+				case 'hide':
+					$api.addCls(sheet, 'sheet-hide');
+					break;
+			}
+		}
+	}
+
+	function clickBtn(index) { //点击按钮
+		// 执行远程关闭方法
+		api.execScript({
+			name: api.pageParam.cb_win,
+			frameName: api.pageParam.cb_frm,
+			script: api.pageParam.cb_fun + '(' + index + ');'
+		});
+	}
+</script>
+
+</html>

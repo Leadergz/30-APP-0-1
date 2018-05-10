@@ -1,0 +1,237 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>Hello APP</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css" />
+    <style type="text/css">
+    html,body{
+        height: 100%;
+        color: #FFF;
+        text-align: center;
+    }
+    header {
+        height: 44px;
+        background-color: #E0474C;
+        font-size: 18px;
+        line-height: 44px;
+    }
+    section {
+        margin-top: 30px;
+    }
+    .button {
+        margin: 10px 20px;
+        height: 44px;
+        background-color: #03a9f4;
+        font-size: 16px;
+        line-height: 44px;
+        border-radius: 5px;
+    }
+    </style>
+</head>
+<body class="flex-box flex-column">
+    <header>APICloud Frame 应用范例</header>
+    <section class="flex-1">
+        <div class="button" tapmode="button-tapmode" onclick="openAlertFrame();">打开Alert弹窗</div>
+        <div class="button" tapmode="button-tapmode" onclick="openConfirmFrame();">打开Confirm弹窗</div>
+        <div class="button" tapmode="button-tapmode" onclick="openSheetFrame();">打开Sheet弹窗</div>
+        <div class="button" tapmode="button-tapmode" onclick="openSideFrame();">打开侧滑窗口</div>
+    </section>
+</body>
+<script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript">
+
+    apiready = function(){
+        // 沉浸式状态栏修复
+        var eHeader = $api.dom('header');
+        $api.fixStatusBar(eHeader);
+        // 设置keyback键点击事件
+        addKeyBackMethod();
+    };
+
+    function openAlertFrame() { // 打开alert弹出窗
+        api.openFrame({
+            name: 'alert_frm',
+            url: './html/alert_frm.html',
+            rect: {
+                marginLeft: 0,
+                marginRight: 0,
+                marginTop: 0,
+                marginBottom: 0,
+            },
+            pageParam: {
+                cb_win: api.winName,
+                cb_fun: 'closeAlertFrame',
+                init_fun: 'setDisableBackMethod'
+            }
+        });
+    }
+
+    function closeAlertFrame() { // 关闭alert Frame 回调方法
+        recoveBackMethod();      // 恢复返回方法
+        api.closeFrame({         // 关闭alert Frame
+            name: 'alert_frm'
+        });
+    }
+
+    function openConfirmFrame() { // 打开confirm弹出窗
+        api.openFrame({
+            name: 'confirm_frm',
+            url: './html/confirm_frm.html',
+            rect: {
+                marginLeft: 0,
+                marginRight: 0,
+                marginTop: 0,
+                marginBottom: 0,
+            },
+            pageParam: {
+                cb_win: api.winName,
+                cb_fun: 'closeConfirmFrame',
+                init_fun: 'setDisableBackMethod'
+            }
+        });
+    }
+
+    function closeConfirmFrame( pSign ) { // 关闭confirm Frame 回调方法
+        recoveBackMethod(); // 恢复返回方法
+        api.closeFrame({ // 关闭confirm Frame
+            name: 'confirm_frm'
+        });
+        if ( 1 == pSign ) {
+            api.toast({
+                msg: '你竟然不相信 -_-!',
+                duration: 2000,
+                location: 'bottom'
+            });
+        }
+        else if( 2 == pSign ) {
+            api.toast({
+                msg: '你竟然不知道 -_-!',
+                duration: 2000,
+                location: 'bottom'
+            });
+        }
+        else if( 3 == pSign ) {
+            api.toast({
+                msg: '你和我的想法一样 Y(*^_^*)Y',
+                duration: 2000,
+                location: 'bottom'
+            });
+        }
+    }
+
+    function openSheetFrame() { // 打开sheet弹出窗
+        api.openFrame({
+            name: 'sheet_frm',
+            url: './html/sheet_frm.html',
+            rect: {
+                marginLeft: 0,
+                marginRight: 0,
+                marginTop: 0,
+                marginBottom: 0,
+            },
+            pageParam: {
+                cb_win: api.winName,
+                cb_fun: 'closeSheetFrame',
+                init_fun: 'setDisableBackMethod'
+            }
+        });
+    }
+
+    function closeSheetFrame( index ) {
+        recoveBackMethod(); // 恢复返回方法
+        /* 可自定义选择后的代码逻辑 */
+        alert(index)
+    }
+
+    function openSideFrame() { // 打开模拟侧滑窗口
+        api.openFrame({
+            name: 'side_frm',
+            url: './html/side_frm.html',
+            rect: {
+                marginTop: 0,
+                marginBottom: 0,
+                w: 'auto',
+                h: 'auto'
+            },
+            pageParam: {
+                cb_win: api.winName,
+                cb_fun: 'closeSideFrame',
+                init_fun: 'setDisableBackMethod'
+            }
+        });
+    }
+
+    function closeSideFrame(index) {
+        recoveBackMethod(); // 恢复返回方法
+        switch (index) {
+            case 1:
+                alert('个人资料')
+                break;
+
+            case 2:
+                alert('个人空间')
+                break;
+            case 3:
+                alert('我喜欢的人')
+                break;
+            case 4:
+                alert('关注我的人')
+                break;
+        }
+        /* 可自定义关闭侧滑窗口的执行代码逻辑 */
+    }
+
+    var backTouched = false; // keyback 键点击状态
+    function addKeyBackMethod() {
+        // 设置 keyback 双击退出APP
+        api.addEventListener({
+            name: 'keyback'
+        }, function(ret, err){
+            if(backTouched){
+                // 执行退出
+                api.closeWidget({
+                    silent: true // 静默退出
+                });
+            }
+            else {
+                backTouched = true;
+                api.toast({
+                    msg: '再按一次退出APP',
+                    duration: 2000,
+                    location: 'bottom'
+                });
+                setTimeout(function(){
+                    backTouched = false;
+                },2000);
+            }
+        });
+    }
+
+    function setDisableBackMethod() { // 设置禁止返回
+        // 禁止 android keyback 键返回
+        api.addEventListener({
+            name: 'keyback'
+        }, function(ret, err){
+
+        });
+        /* 禁止 iOS 侧滑返回 [当多个win窗口时使用]
+            api.setWinAttr({
+                slidBackEnabled: false
+            });
+        */
+    }
+
+    function recoveBackMethod() { // 恢复返回功能
+        addKeyBackMethod(); // 恢复keyback 事件
+        /* 恢复 iOS 侧滑返回 [当多个win窗口时使用]
+            api.setWinAttr({
+                slidBackEnabled: true
+            });
+        */
+    }
+
+</script>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"
+	/>
+	<meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+	<title>Hello APP</title>
+	<link rel="stylesheet" type="text/css" href="../css/api.css" />
+	<style>
+		html,
+		body {
+			height: 100%;
+			width: 100%;
+			background-color: rgba(0, 0, 0, 0);
+			text-align: center;
+		}
+
+		/* 遮罩 */
+
+		.mask {
+			box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(55, 55, 55, 0.3);
+		}
+
+		.side-content {
+			position: fixed;
+			top: 0;
+			right: -100%;
+			width: 60%;
+			height: 100%;
+			background: #fff;
+			opacity: 0;
+			-webkit-transition-property: -webkit-transform, opacity, right;
+			transition-property: transform, opacity, right;
+		}
+
+		.side-content-top-img {
+			border-radius: 50%;
+			margin: 10px auto;
+			width: 80px;
+			height: 80px;
+			background: url('../image/head_portrait.jpg') no-repeat;
+			background-size: 80px;
+		}
+
+		.side-content-top-name {
+			color: #330c0c;
+			font-size: 18px;
+		}
+
+		.side-content-list {
+			margin: 30px 0;
+		}
+
+		.side-content-list ul li {
+			position: relative;
+			margin: 15px 0;
+			width: 100%;
+			height: 50px;
+			line-height: 50px;
+		}
+
+		.side-content-list ul li:after {
+			content: '';
+			display: block;
+			position: absolute;
+			left: 0;
+			top: 0;
+			height: 1px;
+			width: 100%;
+			background-color: #ccc;
+			-webkit-transform: scaleY(.5);
+			transform: scaleY(.5);
+			-webkit-transform-origin: center top;
+			transform-origin: center top;
+		}
+
+		.side-content-list ul li::before {
+			content: '';
+			display: block;
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			height: 1px;
+			width: 100%;
+			background-color: #ccc;
+			-webkit-transform: scaleY(.5);
+			transform: scaleY(.5);
+			-webkit-transform-origin: center bottom;
+			transform-origin: center bottom;
+		}
+
+		.side-content-sign-out {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 50px;
+			color: rgb(190, 3, 3);
+			line-height: 50px;
+		}
+
+		.side-show {
+			opacity: 1;
+			right: 0;
+			-webkit-transition-duration: 300ms;
+			transition-duration: 300ms;
+		}
+
+		.side-hide {
+			opacity: 0;
+			right: -100%;
+			-webkit-transition-duration: 300ms;
+			transition-duration: 300ms;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="mask" tapmode onclick="sideAnimation('hide')">
+		<div class="side-content">
+			<div class="side-content-top">
+				<div class="side-content-top-img"></div>
+				<div class="side-content-top-name">小明</div>
+			</div>
+			<div class="side-content-list">
+				<ul>
+					<li tapmode onclick="clickBtn(1)">个人资料</li>
+					<li tapmode onclick="clickBtn(2)">个人空间</li>
+					<li tapmode onclick="clickBtn(3)">我喜欢的人</li>
+					<li tapmode onclick="clickBtn(4)">关注我的人</li>
+				</ul>
+			</div>
+			<div class="side-content-sign-out">退出登陆</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function () {
+		sideAnimation('show')
+		setShowMethod()
+		api.addEventListener({
+			name: 'swiperight'
+		}, function (ret, err) {
+			sideAnimation('hide')
+		});
+	};
+
+	function setShowMethod() {  // 设置显示方法
+		// 设置禁止 keyBack及滑动返回（跨页面远程调用）
+		api.execScript({
+			name: api.pageParam.cb_win,
+			frameName: api.pageParam.cb_frm,
+			script: api.pageParam.init_fun + '();'
+		});
+	}
+
+	function clickBtn(index) { //点击侧滑窗口按钮
+		// 执行远程关闭方法
+		api.execScript({
+			name: api.pageParam.cb_win,
+			frameName: api.pageParam.cb_frm,
+			script: api.pageParam.cb_fun + '(' + index + ');'
+		});
+		sideAnimation('hide')
+	}
+
+	function sideAnimation(state) { //动画显示隐藏
+		if (state) {
+			var side = $api.dom('.side-content');
+			switch (state) {
+				case 'show':
+					$api.addCls(side, 'side-show');
+					break;
+				case 'hide':
+					$api.addCls(side, 'side-hide');
+					setTimeout(function () {
+						api.closeFrame();
+					}, 300);
+					break;
+			}
+		}
+	}
+
+</script>
+
+</html>

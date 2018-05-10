@@ -1,0 +1,180 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"
+    />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>Confirm选择警告框</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+        html,
+        body {
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0);
+            text-align: center;
+        }
+        .active {
+            background-color: rgb(230, 230, 230);
+        }
+        /* 遮罩 */
+		.mask {
+			box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+            padding-top: 50%;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(55, 55, 55, 0.3);
+		}
+        /* 遮罩end */
+        .tips {
+            border-radius: 10px;
+            margin: 0 30px 10px;
+            background-color: #FFF;
+            /* 模拟ios弹出窗动画 */
+            opacity: 0;
+            -webkit-transform: translate3d(0, 0, 0) scale(1.2);
+            transform: translate3d(0, 0, 0) scale(1.2);
+            -webkit-transition-property: -webkit-transform, opacity;
+            transition-property: transform, opacity;
+        }
+
+        .tips-title {
+            padding-top: 20px;
+            position: relative;
+            font-size: 18px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .tips-content {
+            position: relative;
+            height: 90px;
+            line-height: 90px;
+        }
+
+        .tips-content:after {
+            content: '';
+            display: block;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 1px;
+            width: 100%;
+            background-color: #ccc;
+            -webkit-transform: scaleY(.5);
+            transform: scaleY(.5);
+            -webkit-transform-origin: center bottom;
+            transform-origin: center bottom;
+        }
+
+        .flex-box {
+            display: flex;
+        }
+        .tips-btn-sure {
+            flex: 1;
+            position: relative;
+            width: 80px;
+            height: 55px;
+            line-height: 55px;
+            font-size: 14px;
+            color: #555;
+        }
+        .tips-btn-sure:nth-child(1)::after,
+        .tips-btn-sure:nth-child(2)::after {
+            content: '';
+            display: block;
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 1px;
+            background-color: #ccc;
+            -webkit-transform: scaleX(.5);
+            transform: scaleX(.5);
+            -webkit-transform-origin: center bottom;
+            transform-origin: center bottom;
+        }
+        /* 弹出窗口动画class */
+        .tips-popup-show {
+            opacity: 1;
+            -webkit-transition-duration: 300ms;
+            transition-duration: 300ms;
+            -webkit-transform: translate3d(0, 0, 0) scale(1);
+            transform: translate3d(0, 0, 0) scale(1);
+        }
+
+        .tips-popup-hide {
+            opacity: 0;
+            -webkit-transition-duration: 300ms;
+            transition-duration: 300ms;
+            -webkit-transform: translate3d(0, 0, 0) scale(0.8);
+            transform: translate3d(0, 0, 0) scale(0.8);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mask">
+        <div class="tips">
+            <div class="tips-title">Confirm 选择弹出框</div>
+            <div class="tips-content">APP 能够改变世界吗？</div>
+            <div class="tips-bottom flex-box">
+                <div class="tips-btn-sure" tapmode="active" onclick="touchBtn(1);">不可能</div>
+                <div class="tips-btn-sure" tapmode="active" onclick="touchBtn(2);">也许吧</div>
+                <div class="tips-btn-sure" tapmode="active" onclick="touchBtn(3);">我坚信</div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+
+    apiready = function () {
+        setShowMethod();
+        popupAnimation('show'); // 初始化时执行窗口动画
+    };
+
+    function setShowMethod() {  // 设置显示方法
+        // 设置禁止 keyBack及滑动返回（跨页面远程调用）
+        api.execScript({
+            name: api.pageParam.cb_win,
+            frameName: api.pageParam.cb_frm,
+            script: api.pageParam.init_fun + '();'
+        });
+    }
+
+    /**
+     * 确定按钮点击事件
+     * @param  {Number} pSign 点击按钮标识 pSign=1——不可能 pSign=2——也许吧 pSign=3——我坚信
+     * @return {Void}
+     */
+    function touchBtn(pSign) { //
+        // 执行远程关闭方法
+        api.execScript({
+            name: api.pageParam.cb_win,
+            frameName: api.pageParam.cb_frm,
+            script: api.pageParam.cb_fun + '(' + pSign + ');'
+        });
+        //窗口关闭动画
+        popupAnimation('hide')
+    }
+
+
+    function popupAnimation(state) {// 弹窗动画的状态
+        if (state) {
+            var tips = $api.dom('.tips');
+            switch (state) {
+                case 'show':
+                    $api.addCls(tips, 'tips-popup-show');
+                    break;
+                case 'hide':
+                    $api.addCls(tips, 'tips-popup-hide');
+                    break;
+            }
+        }
+    }
+</script>
+
+</html>
