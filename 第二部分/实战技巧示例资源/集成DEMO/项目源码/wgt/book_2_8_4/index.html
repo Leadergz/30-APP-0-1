@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css" />
+    <style type="text/css">
+        html, body {
+            height: 100%;
+            background-color: #FFF;
+        }
+        .banner-bg {
+            width: 100%;
+        }
+        img {
+            width: 100%;
+            height: 100%;
+        }
+        .cell {
+            position: relative;
+            height: 90px;
+            margin: 10px 20px ;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+        }
+        .cell:after {
+            content: '';
+            display: block;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: #555;
+            -webkit-transform: scaleY(0.5);
+            transform: scaleY(0.5);
+            -webkit-transform-origin: 0 0;
+            transform-origin: 0 0;
+        }
+        .cell-icon {
+            margin: auto 20px auto 0;
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+            overflow: hidden;
+        }
+        .flex-1 {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+        }
+        .cell-title {
+            margin-top: 15px;
+            height: 25px;
+            line-height: 25px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .cell-subtitle {
+            height: 30px;
+            line-height: 30px;
+            font-size: 14px;
+            color: #3C3C3C;
+        }
+    </style>
+</head>
+<body>
+    <div id="background-img" class="banner-bg">
+        <img src="./res/test_bg_index.jpg" alt="">
+    </div>
+    <div id="list" class="list">
+        <!-- <div class="cell">
+            <div class="cell-icon">
+                <img src="./icon/icon150x150.png" alt="">
+            </div>
+            <div class="flex-1">
+                <div class="cell-title">APICloud 单元格标题</div>
+                <div class="cell-subtitle">APICloud 单元格副标题</div>
+            </div>
+        </div> -->
+    </div>
+</body>
+<script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript">
+    var eList;  // 列表元素
+    apiready = function(){
+        eList = $api.byId('list');
+        initList();
+        openSubHeader();
+        addChangeHeaderColorMethod()
+    };
+
+    function openSubHeader() { // 打开Header 页面
+        /* 计算Header 页面高度
+            header页面高度 = header设计高度 + 沉浸式状态栏修复高度
+         */
+        var tH = 44 + api.safeArea.top;
+        api.openFrame({
+            name: 'index_header_frm',
+            url: 'index_header_frm.html',
+            rect: {
+                marginLeft: 0,
+                marginTop: 0,
+                marginRight: 0,
+                h: tH
+            },
+            bounces: false
+        });
+
+    }
+
+    function initList() {  // 创建模拟List
+        var tHTML = '';
+        for (var i = 0; i<30; i++) {
+            var tCell = '<div class="cell">' +
+                            '<div class="cell-icon">' +
+                                '<img src="./icon/icon150x150.png" alt="">' +
+                            '</div>' +
+                            '<div class="flex-1">' +
+                                '<div class="cell-title">APICloud 单元格标题' + i + '</div>' +
+                                '<div class="cell-subtitle">APICloud 单元格副标题' + i + '</div>' +
+                            '</div>' +
+                        '</div>';
+            tHTML+= tCell;
+        }
+        $api.append(eList, tHTML);
+    }
+
+    function addChangeHeaderColorMethod() { // 添加滚动改变头部颜色方法
+        var tHeight = api.winHeight/2;
+        window.onscroll = function(){
+            var tScrollTop = document.body.scrollTop;
+            if(tScrollTop>tHeight) {
+                tScrollTop = tHeight;
+            }
+            api.execScript({
+                name: api.winName,
+                frameName: 'index_header_frm',
+                script: 'changeHeaderColor('+tScrollTop+');'
+            });
+        }
+    }
+
+
+</script>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>城市选择器-3级</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+        body,
+        html {
+            height: 100%;
+            background-color: rgba(155, 155, 155, 0);
+        }
+
+        .sheet {
+            background: #fff;
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            width: 100%;
+        }
+
+        .sheet-header {
+            height: 50px;
+            font-size: 16px;
+            color: #727272;
+            text-align: center;
+            position: relative;
+            line-height: 50px;
+            box-shadow: 0px -1px 1px 1px rgba(155, 155, 155, 0.5);
+        }
+
+        .Btn {
+            width: 50px;
+            margin: 0px 20px;
+            color: #e0474c;
+            font-size: 14px;
+        }
+
+        .sheet-body {
+            position: relative;
+        }
+
+        .sheet-body:before {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            height: 1px;
+            width: 100%;
+            background-color: #CCCCCC;
+            -webkit-transform: scale(1, 0.5);
+            transform: scale(1, 0.5);
+            -webkit-transform-origin: center top;
+            transform-origin: center top;
+        }
+
+        .sheet-body:after {
+            content: '';
+            display: block;
+            height: 1px;
+            width: 100%;
+            position: absolute;
+            background-color: #CCCCCC;
+            bottom: 0px;
+            left: 0px;
+            -webkit-transform: scale(1, 0.5);
+            transform: scale(1, 0.5);
+            -webkit-transform-origin: center bottom;
+            transform-origin: center bottom;
+        }
+
+        .title {
+            margin: 0px 20px;
+        }
+
+        .title span {
+            color: #727272;
+            font-size: 14px;
+            line-height: 50px;
+            display: block;
+            text-align: center;
+        }
+
+        #picker-container {
+            height: 135px;
+        }
+
+        .cell {
+            height: 45px;
+            line-height: 48px;
+            font-size: 0.7rem;
+            position: relative;
+            margin: 0px 20px;
+            box-sizing: border-box;
+        }
+
+        .cell:before {
+            content: '';
+            display: block;
+            height: 1px;
+            width: 100%;
+            position: absolute;
+            background-color: #CCCCCC;
+            top: 0px;
+            left: 0px;
+            -webkit-transform: scale(1, 0.5);
+            transform: scale(1, 0.5);
+            -webkit-transform-origin: center top;
+            transform-origin: center top;
+        }
+
+        .cell:after {
+            content: '';
+            display: block;
+            height: 1px;
+            width: 100%;
+            position: absolute;
+            background-color: #CCCCCC;
+            bottom: 0px;
+            left: 0px;
+            -webkit-transform: scale(1, 0.5);
+            transform: scale(1, 0.5);
+            -webkit-transform-origin: center bottom;
+            transform-origin: center bottom;
+        }
+
+        .cancel {
+            height: 50px;
+            line-height: 50px;
+            font-size: 14px;
+            color: #727272;
+            text-align: center;
+            border-top: 10px solid #EEEEEE;
+        }
+    </style>
+</head>
+
+<body class="flex-box flex-column">
+    <div class="flex-1"></div>
+    <div class="sheet">
+        <div class="flex-box sheet-header">
+            <div class="Btn"></div>
+            <div class="flex-1">请选择</div>
+            <div class="Btn" tapmode="touched" onclick="fnCompleteBtnTouched();">完成</div>
+        </div>
+        <div class="sheet-body">
+            <div class="title flex-box">
+                <span class="flex-1">省</span>
+                <span class="flex-1">市</span>
+                <span class="flex-1">区</span>
+            </div>
+            <div id="picker-container" class="flex-box flex-column">
+                <div class="flex-1"></div>
+                <div class="cell"></div>
+                <div class="flex-1"></div>
+            </div>
+        </div>
+        <div class="cancel" tapmode="touched" onclick="fnCancelBtnTouched();">取消</div>
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+    var UILinkedPicker; // 模块对象
+    var oSelectedData;  // 用户选择内容
+    apiready = function() {
+        fnOpenPicker();
+    };
+
+    function fnOpenPicker() {  // 创建联动选择器
+        UILinkedPicker = api.require('UILinkedPicker'); // 初始化模块对象
+        var tY = api.winHeight - 184 - 10;    // 计算选择器高度坐标 y 数值
+        var tW = api.frameWidth - 40;         // 计算选择器宽度 w 数值
+
+        UILinkedPicker.open({
+            rect: {
+                x: 20,
+                y: tY,
+                w: tW,
+                h: 135
+            },
+            styles: {
+                bg: 'rgba(61,61,61,0)',
+                text: {
+                    size: 14,
+                    selected: '#3d3d3d',
+                    normal: 'rgba(61,61,61,0.5)'
+                },
+                item: {
+                    // w: 80,        //（可选项）数字类型；背景视图的宽；默认值：单元格宽-20，本页面该参数使用默认值即可
+                    h: 45,           //（可选项）数字类型；背景视图的高；默认值：单元格高-20
+                    normal: 'rgba(61,61,61,0)', //（可选项）字符串类型；常态背景色，支持 rgb、rgba、#；默认值：#87ceeb
+                    selected: 'rgba(61,61,61,0)', //（可选项）字符串类型；选中后的背景色，支持 rgb、rgba、#；默认值：#218868
+                    zoomIn: 1.2 //（可选项）数字类型；选中后放大倍数，；默认值：1.2
+                }
+            },
+            data: 'widget://wgt/book_2_8_2/res/city_level3.json',  // 引用的数据源文件
+            rows: 3,
+            fixedOn: api.frameName
+        }, function(ret, err) {
+            if (ret) {
+                if (ret && 'object' === typeof ret.selects) {
+                    oSelectedData = ret.selects;  // 将选择内容赋值给全局变量oSelectedData
+                }
+            }
+        });
+    }
+
+    /**************************************************
+    								页面点击事件
+    ***************************************************/
+    //取消按钮点击事件
+    function fnCancelBtnTouched() {
+        api.execScript({  // 调用上级页面方法来关闭选择器
+            name: api.pageParam.cb_win,
+            frameName: api.pageParam.cb_frm,
+            script: 'fnCloseSheetFrame();'
+        });
+    }
+
+    //完成按钮点击
+    function fnCompleteBtnTouched() {
+        if (!oSelectedData || oSelectedData.length == 0) {  // 判断是否已选择数据
+            api.toast({
+                msg: '请选择省市区！',
+                duration: 2000,
+                location: 'bottom'
+            });
+            return;
+        } else {
+            // console.log('选择数据:'+JSON.stringify(oSelectedData));
+            api.execScript({ //执行选择后的回调方法
+                name: api.pageParam.cb_win,
+                frameName: api.pageParam.cb_frm,
+                script: api.pageParam.cb_fun+'('+JSON.stringify(oSelectedData)+');'
+            });
+
+        }
+    }
+</script>
+
+</html>

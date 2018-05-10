@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>Hello APP</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css" />
+    <style type="text/css">
+        html {
+            height: 100%;
+            font-size: 100px;
+        }
+        body,section {
+            height: 100%;
+            font-size: 16px;
+        }
+        
+        .flex-h {
+            display: -webkit-box;
+        }
+        .flex-v {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-flex-flow: column;
+        }
+        .flex-1 {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+        }
+
+        .container {
+            margin: 30px 20px;
+        }
+
+        .title {
+            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 30px;
+        }
+        .label {
+            width: 20%;
+            margin-left: 20px;
+            line-height: 30px;
+            font-size: 16px;
+            font-weight: 300;
+            text-align: right;
+        }
+        .line {
+            margin-top: 15px;
+            width: 70%;
+            height: 1px;
+            background-color: #000;
+        }
+        .thin-line {
+            margin-top: 15px;
+            width: 70%;
+            height: 1px;
+            background-color: #000;
+            -webkit-transform: scaleY(.5);
+            transform: scaleY(.5);
+            -webkit-transform-origin: left bottom;
+            transform-origin: left bottom;
+        }
+        .box {
+            margin: 15px auto;
+            width: 80px;
+            height: 80px;
+            border: 1px solid #000;
+        }
+        .thin-box {
+            position: relative;
+            margin: 15px auto;
+            width: 80px;
+            height: 80px;
+        }
+        .thin-box:after {
+            content: '';
+            display: block;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 200%;
+            height: 200%;
+            border: 1px solid #000;
+            -webkit-transform: scale(.5);
+            transform: scale(.5);
+            -webkit-transform-origin: left top;
+            transform-origin: left top;
+        }
+        .box-label {
+            text-align: center;
+        }
+
+    </style>
+</head>
+
+<body>
+    <section>
+        <div class="container">
+            <div class="title">线条对比展示：</div>
+            <div class="flex-h">
+                <div class="flex-1 thin-line"></div>
+                <div class="label">0.5px</div>
+            </div>
+            <div class="flex-h">
+                <div class="flex-1 line"></div>
+                <div class="label">1px</div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="title">边框对比展示：</div>
+            <div class="flex-h">
+                <div class="flex-1">
+                    <div class="thin-box"></div>
+                    <div class="box-label">0.5px</div>
+                </div>
+                <div class="flex-1">
+                    <div class="box"></div>
+                    <div class="box-label">1px</div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+<script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+    };
+
+</script>
+
+</html>

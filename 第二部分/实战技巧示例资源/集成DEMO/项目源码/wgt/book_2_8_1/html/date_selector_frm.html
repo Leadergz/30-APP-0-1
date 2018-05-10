@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>日期选择器</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+        body,
+        html {
+            height: 100%;
+            background-color: rgba(155, 155, 155, 0);
+        }
+
+        .sheet {
+            background: #fff;
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            width: 100%;
+        }
+
+        .sheet-header {
+            height: 50px;
+            font-size: 16px;
+            color: #727272;
+            text-align: center;
+            position: relative;
+            line-height: 50px;
+            box-shadow: 0px -1px 1px 1px rgba(155, 155, 155, 0.5);
+        }
+
+        .Btn {
+            width: 50px;
+            margin: 0px 20px;
+            color: #e0474c;
+            font-size: 14px;
+        }
+
+        .sheet-body {
+            position: relative;
+        }
+
+        .sheet-body:before {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            height: 1px;
+            width: 100%;
+            background-color: #CCCCCC;
+            -webkit-transform: scale(1, 0.5);
+            transform: scale(1, 0.5);
+            -webkit-transform-origin: center top;
+            transform-origin: center top;
+        }
+
+        .sheet-body:after {
+            content: '';
+            display: block;
+            height: 1px;
+            width: 100%;
+            position: absolute;
+            background-color: #CCCCCC;
+            bottom: 0px;
+            left: 0px;
+            -webkit-transform: scale(1, 0.5);
+            transform: scale(1, 0.5);
+            -webkit-transform-origin: center bottom;
+            transform-origin: center bottom;
+        }
+
+        .title {
+            margin: 0px 20px;
+        }
+
+        .title span {
+            color: #727272;
+            font-size: 14px;
+            line-height: 50px;
+            display: block;
+            text-align: center;
+        }
+
+        #picker-container {
+            height: 135px;
+        }
+
+        .cell {
+            height: 45px;
+            line-height: 48px;
+            font-size: 0.7rem;
+            position: relative;
+            margin: 0px 20px;
+            box-sizing: border-box;
+        }
+
+        .cell:before {
+            content: '';
+            display: block;
+            height: 1px;
+            width: 100%;
+            position: absolute;
+            background-color: #CCCCCC;
+            top: 0px;
+            left: 0px;
+            -webkit-transform: scale(1, 0.5);
+            transform: scale(1, 0.5);
+            -webkit-transform-origin: center top;
+            transform-origin: center top;
+        }
+
+        .cell:after {
+            content: '';
+            display: block;
+            height: 1px;
+            width: 100%;
+            position: absolute;
+            background-color: #CCCCCC;
+            bottom: 0px;
+            left: 0px;
+            -webkit-transform: scale(1, 0.5);
+            transform: scale(1, 0.5);
+            -webkit-transform-origin: center bottom;
+            transform-origin: center bottom;
+        }
+
+        .cancel {
+            height: 50px;
+            line-height: 50px;
+            font-size: 14px;
+            color: #727272;
+            text-align: center;
+            border-top: 10px solid #EEEEEE;
+        }
+    </style>
+</head>
+
+<body class="flex-box flex-column">
+    <div class="flex-1"></div>
+    <div class="sheet">
+        <div class="flex-box sheet-header">
+            <div class="Btn"></div>
+            <div id="title" class="flex-1">请选择日期</div>
+            <div class="Btn" tapmode="touched" onclick="fnCompleteBtnTouched();">完成</div>
+        </div>
+        <div class="sheet-body">
+            <div class="title flex-box">
+                <span class="flex-1">年</span>
+                <span class="flex-1">月</span>
+                <span class="flex-1">日</span>
+            </div>
+            <div id="picker-container" class="flex-box flex-column">
+                <div class="flex-1"></div>
+                <div class="cell"></div>
+                <div class="flex-1"></div>
+            </div>
+        </div>
+        <div class="cancel" tapmode="touched" onclick="fnCancelBtnTouched();">取消</div>
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+    var vPickerId;  // 记录当前模块ID的变量
+    apiready = function() {
+        fnOpenPicker();
+    };
+
+    function fnOpenPicker() {  // 创建联动选择器
+        UICustomPicker = api.require('UICustomPicker'); // 引入模块
+        // 定义模块初始化需要的参数
+        // 根据页面HTML布局，定义模块所在位置参数
+        var tY = api.winHeight - 184 - 10;   // 定义模块rect中的Y，起始高度数值
+        var tW = api.frameWidth - 40;	 // 定义模块rect中的w，宽度数值
+        // 定义模块可选择的时间范围参数
+        // 获取当前年份
+        var tNow = new Date();
+        var tYear = tNow.getFullYear();  // 获取当前年份
+        var tMonth = tNow.getMonth();    // 获取当前月份
+        var tDate = tNow.getDate();      // 获取当前日期
+        var tMinYear = tYear - 100;    // 可选最小时间，100年前
+        var tMaxYear = tYear + 100;    // 可选最大时间，100年后
+        UICustomPicker.open({
+            rect: {
+                x: 20,
+                y: tY,
+                w: tW,
+                h: 135
+            },
+            styles: {
+                bg: 'rgba(61,61,61,0.0)',
+                normalColor: 'rgba(61,61,61,0.5)',
+                selectedColor: '#3d3d3d',
+                selectedSize: 28,
+                tagColor: '#3685dd',
+                tagSize: 16
+            },
+            data: [{
+                scope: tMinYear + '-' + tMaxYear
+            }, {
+                scope: '1-12'
+            }, {
+                scope: '1-31'
+            }],
+            autoHide: false,
+            loop: true,
+            rows: 3,
+            fixedOn: api.frameName,
+            fixed: true
+        }, function(ret, err) {
+            if (ret) {
+                if('number' == typeof ret.id) {
+                    vPickerId = ret.id;  // 记录当前模块的ID
+                }
+                if('show' === ret.eventType) {
+                    // 设置当前时间为默认值
+                    var tDefault = [tYear,tMonth+1,tDate];
+                    fnSetSelectedValue(tDefault);
+                }
+                if('selected' === ret.eventType) {
+                    //判断选择值的合法性
+                    fnCheckSelectedValue(ret.data);
+                }
+            }
+        });
+    }
+
+    /**
+		 * 闰年判断
+		 * @param  {Number} pYear 4位数字组成的年份值
+		 * @constructor
+		 */
+		Date.prototype.isLeapYear = function(pYear) {
+		    var self = this;
+		    var tYear = 'number' === typeof pYear ? pYear:self.getFullYear();
+		    return (tYear % 4 == 0) && (tYear % 100 != 0 || tYear % 400 == 0);
+		}
+
+		var oSelectedData; // 选择的时间数组
+		/**
+ 		 * 判断选择值的合法性
+ 		 * @param  {Array} pData 日期选择器选择后的回调数据
+		 * @return {void}
+		 */
+		function fnCheckSelectedValue(pData) {
+			if('[object Array]' !== Object.prototype.toString.call(pData)) {
+  				return;
+			}
+			//判断特殊日期
+			//获取月份进行判断
+			var tData = pData;
+			switch (tData[1]) {
+  				case '2':
+    					//判断是否为闰年
+    					var tNum = '28';
+    					if(new Date().isLeapYear(tData[0])){
+      						tNum = '29';
+    					}
+    					if( parseInt(tData[2]) > parseInt(tNum) ){
+      						tData[2] = tNum;
+      						fnSetSelectedValue(tData);
+    					}
+    					else {
+      						oSelectedData = tData;
+    					}
+    					break;
+  				case '4':
+  				case '6':
+  				case '9':
+  				case '11':
+    					if( tData[2] == '31') {
+      						tData[2] = '30';
+      						fnSetSelectedValue(tData);
+    					}
+    					else {
+      						oSelectedData = tData;
+    					}
+    					break;
+  				default:
+    					oSelectedData = tData;
+			}
+		}
+
+		/**
+ 		 * 主动设置选择器的选择值
+ 		 * @param  {Array} pData 日期选择器选择后的回调数据
+		 * @return {void}
+		 */
+		function fnSetSelectedValue(pData) {
+		    if('[object Array]' !== Object.prototype.toString.call(pData)) {
+		        return;
+		    }
+		    UICustomPicker.setValue({
+		        id: vPickerId,
+		        data: pData
+		    });
+		    oSelectedData = pData;
+		}
+
+
+    /**************************************************
+    								页面点击事件
+    ***************************************************/
+    //取消按钮点击事件
+    function fnCancelBtnTouched() {
+        api.execScript({  // 调用上级页面方法来关闭选择器
+            name: api.pageParam.cb_win,
+            frameName: api.pageParam.cb_frm,
+            script: 'fnCloseSheetFrame();'
+        });
+    }
+
+		//完成按钮点击
+		function fnCompleteBtnTouched() {
+  			if(!oSelectedData || oSelectedData.length == 0) {
+    				api.toast({
+    				    msg: '请选择日期！',
+    				    duration: 2000,
+    				    location: 'bottom'
+    				});
+    				return;
+  			}
+  			else {
+    				/* 执行完成后续业务逻辑 */
+            // console.log('选择数据:'+JSON.stringify(oSelectedData));
+            api.execScript({ //执行选择后的回调方法
+                name: api.pageParam.cb_win,
+                frameName: api.pageParam.cb_frm,
+                script: api.pageParam.cb_fun+'('+JSON.stringify(oSelectedData)+');'
+            });
+  			}
+		}
+</script>
+
+</html>
