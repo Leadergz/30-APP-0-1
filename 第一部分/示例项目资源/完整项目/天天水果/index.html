@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>Hello APP</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css" />
+    <style type="text/css">
+
+    </style>
+</head>
+
+<body>
+</body>
+<script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript" src="./script/db.js"></script>
+<script type="text/javascript">
+apiready = function() {
+    initWareTypeList();
+    initDatabase();
+    initPushGeTui();
+    api.openWin({
+        name: 'main',
+        url: './html/main.html',
+        slidBackEnabled: false
+    });
+};
+
+function initDatabase() {
+    $db.open();
+}
+
+function initPushGeTui() {
+    var uzgetuisdk = api.require('pushGeTui');
+    uzgetuisdk.initialize(function(ret) {
+        var value = "";
+        switch (ret.type) {
+            case 'cid':
+                value = 'cid:' + ret.cid;
+                break;
+            case 'payload':
+                value = 'payload:' + ret.payload;
+                fnParsePayLoad(ret.payload);
+                break;
+            case 'occurError':
+                value = 'occurError';
+                break;
+        }
+        //alert(value);
+    });
+}
+
+function fnParsePayLoad (payload_) {
+    var ware = $api.strToJson(payload_);
+    api.openWin({
+        name: 'ware',
+        url: './html/ware.html',
+        pageParam: {
+            wareId: ware.wareId
+        }
+    });
+}
+
+function initWareTypeList() {
+    var wareTypeList = $api.getStorage('wareTypeList');
+    if (!wareTypeList) {
+        wareTypeList = [{
+            "id": "56c80da883af652643474b6b",
+            "name": "水果",
+            "banner": {
+                "url": "http://7y0hol.com1.z0.glb.clouddn.com/apicloud/f761997f8fd33af25af5354737e37bcc.png",
+                "name": "56c80da883af652643474b6b.png",
+                "id": "57f63bdf0d3febfe58585568"
+            },
+            "createdAt": "2016-02-20T06:54:32.808Z",
+            "updatedAt": "2016-10-06T11:56:16.288Z"
+        }, {
+            "id": "56c80db78d04c83d3d1dedea",
+            "name": "食材",
+            "banner": {
+                "url": "http://7y0hol.com1.z0.glb.clouddn.com/apicloud/be93f9fdeda576ad81d0c728528cef50.png",
+                "name": "56c80dc88d04c83d3d1dedf3.png",
+                "id": "57f63be70d3febfe5858556c"
+            },
+            "createdAt": "2016-02-20T06:54:47.996Z",
+            "updatedAt": "2016-10-06T11:56:23.906Z"
+        }, {
+            "id": "56c80dc031da9e480de1cb49",
+            "name": "零食",
+            "banner": {
+                "url": "http://7y0hol.com1.z0.glb.clouddn.com/apicloud/be93f9fdeda576ad81d0c728528cef50.png",
+                "name": "56c80dc88d04c83d3d1dedf3.png",
+                "id": "57f63bec9592b3fc6a341b59"
+            },
+            "createdAt": "2016-02-20T06:54:56.243Z",
+            "updatedAt": "2016-10-06T11:56:28.778Z"
+        }, {
+            "id": "56c80dc383af652643474b6d",
+            "name": "牛奶",
+            "banner": {
+                "url": "http://7y0hol.com1.z0.glb.clouddn.com/apicloud/f761997f8fd33af25af5354737e37bcc.png",
+                "name": "56c80da883af652643474b6b.png",
+                "id": "57f63bf0c6f05d0956108828"
+            },
+            "createdAt": "2016-02-20T06:54:59.891Z",
+            "updatedAt": "2016-10-06T11:56:32.300Z"
+        }, {
+            "id": "56c80dc88d04c83d3d1dedf3",
+            "name": "蔬菜",
+            "banner": {
+                "url": "http://7y0hol.com1.z0.glb.clouddn.com/apicloud/be93f9fdeda576ad81d0c728528cef50.png",
+                "name": "56c80db78d04c83d3d1dedea.png",
+                "id": "57f63bf39592b3fc6a341b5d"
+            },
+            "createdAt": "2016-02-20T06:55:04.285Z",
+            "updatedAt": "2016-10-06T11:56:35.789Z"
+        }];
+    }
+    fnGetWareTypeList();
+}
+
+function fnGetWareTypeList() {
+    var params = {
+        fields: {},
+        where: {},
+        skip: 0,
+        limit: 5
+    }
+    params = $api.jsonToStr(params);
+    api.ajax({
+        url: 'http://d.apicloud.com/mcm/api/wareType?filter=' + params,
+        method: 'get',
+        headers: {
+            "X-APICloud-AppId": api.appId,
+            "X-APICloud-AppKey": 'ea748d4ba21a3c5f861dbade4b98adacf7fa5b6c.1524848071825'
+        }
+    }, function(ret, err) {
+        if (ret) {
+            //console.log($api.jsonToStr(ret));
+            $api.setStorage('wareTypeList', ret);
+        } else {
+            alert(JSON.stringify(err));
+        }
+    });
+}
+</script>
+
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>设置详细地址Frame</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+    html,
+    body {
+        height: 100%;
+    }
+
+    body {
+        background-color: #eee;
+    }
+
+    section {
+        width: 100%;
+        height: auto;
+    }
+
+    .option {
+        width: 100%;
+        height: 60px;
+        margin-bottom: 2px;
+        background-color: #fff;
+    }
+
+    .option .icon {
+        position: absolute;
+        top: 20px;
+        left: 16px;
+        width: 16px;
+        height: 20px;
+        background-image: url(../image/icon_address_none.png);
+        background-size: 16px 20px;
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+
+    .option .info {
+        box-sizing: border-box;
+        width: 100%;
+        height: 60px;
+        padding-left: 40px;
+        padding-right: 16px;
+    }
+
+    .option .info .top {
+        box-sizing: border-box;
+        width: 100%;
+        height: 35px;
+        padding-top: 15px;
+        padding-bottom: 4px;
+        font-size: 16px;
+        text-align: left;
+        color: #444;
+    }
+
+    .option .info .bottom {
+        box-sizing: border-box;
+        width: 100%;
+        height: 25px;
+        padding-bottom: 11px;
+        font-size: 12px;
+        text-align: left;
+        color: #888;
+    }
+
+    .highlight {
+        opacity: 0.7;
+    }
+    </style>
+</head>
+
+<body>
+    <section id="list">
+        <!--         <div class="option">
+            <div class="icon"></div>
+            <div class="info">
+                <div class="top">门头沟</div>
+                <div class="bottom">正在获取...</div>
+            </div>
+        </div> -->
+    </section>
+</body>
+<script type="text/template" id="template">
+    {{~it.results:value}}
+    <div class="option" tapmode onclick="fnSelectAddress('{{=value.address}}')">
+        <div class="icon"></div>
+        <div class="info">
+            <div class="top">{{=value.name}}</div>
+            <div class="bottom">{{=value.address}}</div>
+        </div>
+    </div>
+    {{~}}
+</script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript">
+
+var eList;   // 列表容器对象
+var tempFn;  // 获取doT的模版对象
+apiready = function() {
+    eList = $api.byId('list');
+    var template = $api.byId('template');
+    tempFn = doT.template(template.innerHTML);
+};
+
+
+function fnSearchInCity(msg_) {
+    if(!msg_) {
+        $api.html(eList, '');
+        return;
+    }
+    var currentCity = $api.getStorage('currentCity');
+    var bMap = api.require('bMap');
+    bMap.searchInCity({
+        city: currentCity.name,
+        keyword: msg_,
+        pageIndex: 0,
+        pageCapacity: 20
+    }, function(ret) {
+        if (ret.status) {
+            fnUpdateSearchList(ret);
+        }
+    });
+}
+
+function fnUpdateSearchList(data_) {
+
+    var html = tempFn(data_);
+    $api.html(eList, html);
+}
+
+function fnSelectAddress(address_) {
+    api.execScript({
+        name: 'setaddress',
+        frameName: 'setaddress_frame',
+        script: 'setAddressDetail(\'' + address_ + '\');'
+    });
+    api.closeWin();
+}
+</script>
+
+</html>
