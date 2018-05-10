@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+        <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+        <title>title</title>
+        <link rel="stylesheet" type="text/css" href="./css/api.css"/>
+        <style>
+            body {
+            }
+            header {
+                height: 50px;
+                background: #81a9c3;
+            }
+            .btn {
+                width: 50px;
+                height: 50px;
+                text-align: center;
+                line-height: 50px;
+                font-size: 14px;
+                color: #ffffff;
+            }
+            .back {
+                float: left;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="btn back" onclick="api.closeWin()">
+                返回
+            </div>
+        </header>
+    </body>
+    <script type="text/javascript" src="./script/api.js"></script>
+    <script type="text/javascript">
+        var header = $api.dom('header');
+        var aMap, UIButton;
+        apiready = function() {
+            $api.fixStatusBar(header);
+            window.headerPos = $api.offset(header);
+            console.log(JSON.stringify(headerPos))
+            aMap = api.require('aMap');
+            // 引入地图模块，这里使用的是高德地图
+            UIButton = api.require('UIButton');
+            // 引入UIButton模块
+            openMap()
+        };
+        function openMap() {
+            var lon = 116.4021310000;
+            var lat = 39.9994480000;
+            aMap.open({
+                rect : {
+                    x : 0,
+                    y : window.headerPos.h,
+                    w : 'auto',
+                    h : api.frameHeight - window.headerPos.h
+                },
+                center : {
+                    lon : lon,
+                    lat : lat
+                },
+                showUserLocation : true,
+                zoomLevel : 14,
+                fixedOn : api.frameName,
+                fixed : true
+            }, function(ret, err) {
+                if (ret) {
+                    var buttonId;
+                    // 记录下来按钮的id，在点击按钮的时候，对这个按钮的状态进行更改
+                    UIButton.open({
+                        rect : {
+                            x : api.frameWidth - 52,
+                            y : api.frameHeight - 140,
+                            w : 40,
+                            h : 40
+                        },
+                        corner : 5,
+                        bg : {
+                            normal : 'widget://image/dingwei.png',
+                            highlight : 'widget://image/dingwei_2.png',
+                            active : 'widget://image/dingwei_2.png'
+                        }, // 这里是按钮的三种样式
+                        fixedOn : api.frameName,
+                        fixed : true,
+                        move : false
+                    }, function(ret, err) {
+                        if (ret && ret.eventType === 'show') {
+                            buttonId = ret.id
+                        }
+                        if (ret && ret.eventType === 'click') {
+                            // 在接收到按钮被点击的指令之后，更改按钮的状态未normal，用来改变按钮的样式，恢复未点击之前的样式
+                            UIButton.getState({
+                                id : buttonId
+                            }, function(ret, err) {
+                                if (ret.state === 'active') {
+                                    UIButton.setState({
+                                        id : buttonId,
+                                        state : 'normal'
+                                    })
+                                }
+                            });
+                            // 让地图回到中心点处
+                            aMap.setCenter({
+                                coords : {
+                                    lon : lon,
+                                    lat : lat
+                                }
+                            });
+                        }
+                    })
+                }
+            });
+        }
+    </script>
+</html>
