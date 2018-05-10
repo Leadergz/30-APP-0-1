@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css"/>
+    <style>
+    	body{
+    		
+    	}
+    	header{
+    	   height: 50px;
+    	   background: #81a9c3;
+    	}
+    	.btn{
+    	   width: 50px;
+    	   height: 50px;
+    	   text-align: center;
+    	   line-height: 50px;
+    	   font-size: 14px;
+    	   color: #ffffff;
+    	}
+    	.back{
+    	   float: left;
+    	}
+    </style>
+</head>
+<body>
+	<header>
+	   <div class="btn back" onclick="api.closeWin()"> 返回 </div>
+	</header>
+</body>
+<script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript">
+    var header = $api.dom('header');
+	apiready = function(){
+	   $api.fixStatusBar(header);
+	   var headerPos = $api.offset(header);
+	   console.log(JSON.stringify(headerPos))
+		api.openFrame({
+	        name: 'main',
+	        url: './html/main.html',
+	        rect: {
+		        marginTop: headerPos.h,
+		        marginBottom: 0,
+		        marginLeft: 0,
+		        marginRight: 0
+	        }
+        });
+	};
+</script>
+</html>
