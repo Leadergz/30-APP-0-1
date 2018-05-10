@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>图片浏览标题</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<style>
+			body,html{
+				background: rgba(0,0,0,0.2);
+			}
+			header {
+				height: 44px;
+			}
+			.c_title {
+				height: 44px;
+				line-height: 44px;
+				text-align: center;
+				font-weight: bold;
+				color : #FFF;
+				position: relative;
+			}
+			.c_back_btn {
+				position: absolute;
+				width: 44px;
+				height: 44px;
+				left: 0px;
+				top: 0px;
+				background: url(../image/back.png) no-repeat center;
+				background-size: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<header id="header" class="border-b">
+			<div class="c_title">
+				<div class="c_back_btn" onclick="api.closeWin();"></div>
+				<span id="pic_name">图片名称</span>
+			</div>
+		</header>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		var pictureSum;
+		apiready = function() {
+			fnSetHeaderStyle();
+			fnInit();
+		};
+		
+		//设置沉浸式
+		function fnSetHeaderStyle() {
+			var header = $api.byId('header');
+			$api.fixStatusBar(header);
+			api.setStatusBarStyle({
+				style : 'dark',
+				color : 'dark'
+			});
+		}
+		
+		//从上一个界面获取参数，并设置标题栏中的值
+		function fnInit() {
+			pictureSum = api.pageParam.pictureSum;
+			var activeIndex = api.pageParam.activeIndex;
+			fnSetTitle(api.pageParam.pictureName, activeIndex, pictureSum);
+		}
+
+		//设置标题栏中的值
+		function fnSetTitle(title, index) {
+			$api.byId("pic_name").innerHTML = title + "(" + (index + 1) + "/" + pictureSum + ")";
+		}
+	</script>
+</html>
