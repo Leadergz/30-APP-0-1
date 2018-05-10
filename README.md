@@ -11,7 +11,7 @@ APICloud是以新的思想、新的技术、新的模式和新的工具来加速
 
 APICloud团队是国内最早一批进行Web与Native技术融合的实现者，10多年来见证了混合开发技术在国内“悄悄的、慢慢的”火起来的全过程。APICloud拥有着行业领先的高性能App混合渲染引擎，APICloud模块Store汇集了目前App开发需要使用的几乎所有主流API，并且一直在持续更新，我们希望能把一切好的功能加入到APICloud平台，目的就是能真正帮助开发者提高效率、降低成本、解决问题。
 
-访问APICloud平台www.apicloud.com， 注册成为APICloud开发者，开始APICloud开发之旅吧！
+访问APICloud平台 http://www.apicloud.com， 注册成为APICloud开发者，开始APICloud开发之旅吧！
 
 ### 如何阅读本书
 本书共包括三部分正文以及两个附录。
