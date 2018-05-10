@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+        <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+        <title>title</title>
+        <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+        <style>
+            body {
+            }
+            #portrait {
+                margin: 5px;
+            }
+            #list {
+                background: #cccccc;
+            }
+            #list .item {
+                height: 40px;
+                margin: 5px 0;
+            }
+            #list .imgs {
+                float: left;
+                width: 40px;
+                height: 40px;
+                margin-left: 12px;
+            }
+            #list .bgs {
+                float: right;
+                width: 40px;
+                height: 40px;
+                margin-right: 12px;
+                background: url(../image/index-doc.png) center center no-repeat;
+                background-size: contain;
+            }
+        </style>
+    </head>
+    <body>
+        <img src="" alt="" id="portrait" />
+        <ul id="list"></ul>
+    </body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/sha1.js"></script>
+    <script type="text/javascript">
+        function mountHeaders(flag) {
+            // var appid = api.appId;
+            var appid = 'A6062673439536';
+            var now = Date.now();
+            var appKey = SHA1(appid + 'UZ' + '9C1A9055-BC83-355E-2D47-72B38399027E' + 'UZ' + now) + '.' + now;
+            var result = {
+                'X-APICloud-AppId' : appid,
+                'X-APICloud-AppKey' : appKey
+            }
+            if (flag && flag == 'json') {
+                result['Content-Type'] = 'application/json'
+            }
+            return result;
+        }
+
+        apiready = function() {
+            var portrait = $api.dom('#portrait');
+            // 假设此元素是img标签
+            api.imageCache({
+                url : 'https://www.apicloud.com/img/default.png'
+            }, function(ret, err) {
+                if (ret && ret.status) {
+                    $api.attr(portrait, 'src', ret.url);
+                    // 缓存成功，替换为缓存好的图片地址
+                }
+                if (err) {
+                    $api.attr(portrait, 'src', 'widget://image/default.png');
+                    // 如果缓存失败，展示默认头像（img标签有默认图片地址的不用修改）
+                }
+            });
+            getImageDate();
+        };
+        function fnImageCache(data) {
+            for (var i = 0; i < data.length; i++) {
+                var item = data[i];
+                var elements = $api.domAll(item.flag);
+                var src = item.src;
+                ( function(_data) {
+                        api.imageCache({
+                            url : _data.src,
+                            thumbnail : true // 如果觉得缩略图质量不高，可以设置成false，使用原图
+                        }, function(ret, err) {
+                            if (ret && ret.status) {
+                                for (var j = 0; j < _data.elements.length; j++) {
+                                    var _item = _data.elements[j];
+                                    $api.attr(_item, 'src', ret.url);
+                                    // 缓存成功，替换为缓存好的图片地址
+                                }
+                            } else {
+                                // 如果缓存失败，展示默认图片
+                            }
+                        });
+                    }({
+                        elements : elements,
+                        src : src
+                    }))
+            }
+        }
+        var __head__ = $api.dom('head'); // 获取页面中的head元素
+        var cacheImgCount = {
+        };
+        // 这个是用来记录哪些图片被成功缓存过，缓存过的就不做缓存处理
+        function fnImageCacheInHead(tag, src){
+
+            if (cacheImgCount[tag]) {
+            // 如果被成功缓存，就不做处理
+            } else{
+                api.imageCache({
+                    url: src,
+                    thumbnail: true // 如果觉得缩略图质量不高，可以设置成false，使用原图
+                }, function(ret, err){
+                    // 创建一个style标签，里面的内容就是给需要缓存背景图的元素加上背景图片属性
+                    var str = '';
+                    if (ret && ret.status) {
+                        str += '<style>';
+                            str += tag + '{';
+                                str += 'background-image: url('+ ret.url +');';
+                            str += '}';
+                        str += '</style>';
+                        // 拼接好字符串之后，把它作为标签，插入到head元素末尾，这样，页面里所有的此标识的元素，背景图片都会变成缓存的图片
+                        $api.append(__head__, str);
+                        // 最后将这个标识置为true，下次不做缓存处理
+                        cacheImgCount[tag] = true;
+                    } else {
+                        cacheImgCount[tag] = false;
+                    }
+                });
+            }
+        };
+
+
+        var list = $api.dom('#list');
+        function getImageDate() {
+            var headers = mountHeaders();
+            api.ajax({
+                url : 'https://d.apicloud.com/mcm/api/file?filter=' + JSON.stringify({
+                    "where" : {},
+                    "skip" : 0,
+                    "limit" : 20
+                }),
+                headers : headers,
+                method : 'get'
+            }, function(ret, err) {
+                //your codes
+                if (ret) {
+                    if (ret.length) {
+                        var str = '';
+                        var arr = [];
+                        /*
+                         *  假设arr是这样的数组
+                         *  {
+                         *    flag: '', // DOM元素的标识，例如，className
+                         *    src: '' // 需要缓存的图片地址
+                         *  }
+                         */
+                        for (var i = 0; i < ret.length; i++) {
+                            var _this = ret[i]
+                            arr.push({
+                                flag : '.image-' + i, // DOM元素的标识，例如，className
+                                src : _this.url // 需要缓存的图片地址
+                            })
+                            str += '<li class="item">';
+                            str += ('<img class="imgs image-' + i + '" src="../image/index-doc.png" alt="" />');
+                            str += '<span class="bgs bg-'+ 1 +'"></span>';
+                            str += '</li>';
+                            fnImageCacheInHead('#list .bgs.bg-'+ i, _this.url);
+                        }
+                        // 在插入这些DOM元素之后，就可以调用上面的方法
+                        // 缓存成功之后，就会找到对应的DOM元素，并给src赋值
+                        $api.html(list, str);
+                        fnImageCache(arr);
+                    }
+                }
+                if (err) {
+                    api.toast({
+                        msg : JSON.stringify(err),
+                        location : 'bottom'
+                    });
+                }
+            });
+        }
+    </script>
+</html>
