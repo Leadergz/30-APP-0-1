@@ -1,0 +1,363 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="./css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="./css/style.css"/>
+		<style>
+			header{
+				height: 44px;
+				line-height: 44px;
+				text-align: center;
+			}
+			.msg_item {
+				padding-top: 30px;
+				width: 100%;
+			}
+			.msg_time {
+				width: 100%;
+				margin-bottom: 20px;
+				text-align: center;
+				font-size: 14px;
+				color: #b8b8b8;
+			}
+			.msg_content_layout {
+				width: 100%;
+			}
+			.msg_icon {
+				width: 42px;
+				height: 42px;
+				margin-left: 15px;
+				margin-right: 20px;
+			}
+			.msg_icon_img {
+				width: 38px;
+				height: 38px;
+				border-radius: 20px;
+				border: 1px solid #afafaf;
+			}
+			.msg_content {
+				padding: 14px 12px 14px 12px;
+				background: #FFF;
+			}
+			.msg_content_left {
+				border-radius: 0px 15px 15px 15px;
+			}
+			.box-shadow {
+				-moz-box-shadow: 0px 0px 26px rgba(111, 111, 111, 0.15);
+				-webkit-box-shadow: 0px 0px 26px rgba(111, 111, 111, 0.15);
+				box-shadow: 0px 0px 26px rgba(111, 111, 111, 0.15);
+			}
+			.space {
+				min-width: 55px;
+			}
+			.msg_list {
+				padding-bottom: 50px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="msg_list" id="msg_list">
+			<div class="msg_item">
+				<div class="msg_time">12:23</div>
+				<div class="msg_content_layout flex-wrap">
+					<div class="msg_icon">
+						<img class="msg_icon_img" src="./image/default_head_pic.png">
+					</div>
+					<div class="msg_content msg_content_left box-shadow">
+						你好1
+					</div>
+					<div class="space flex-con"></div>
+				</div>
+			</div>
+			<div class="msg_item">
+				<div class="msg_time">12:23</div>
+				<div class="msg_content_layout flex-wrap">
+					<div class="msg_icon">
+						<img class="msg_icon_img" src="./image/default_head_pic.png">
+					</div>
+					<div class="msg_content msg_content_left box-shadow">
+						你好2
+					</div>
+					<div class="space flex-con"></div>
+				</div>
+			</div>
+			<div class="msg_item">
+				<div class="msg_time">12:23</div>
+				<div class="msg_content_layout flex-wrap">
+					<div class="msg_icon">
+						<img class="msg_icon_img" src="./image/default_head_pic.png">
+					</div>
+					<div class="msg_content msg_content_left box-shadow">
+						你好3
+					</div>
+					<div class="space flex-con"></div>
+				</div>
+			</div>
+			<div class="msg_item">
+				<div class="msg_time">12:23</div>
+				<div class="msg_content_layout flex-wrap">
+					<div class="msg_icon">
+						<img class="msg_icon_img" src="./image/default_head_pic.png">
+					</div>
+					<div class="msg_content msg_content_left box-shadow">
+						你好4
+					</div>
+					<div class="space flex-con"></div>
+				</div>
+			</div>
+			<div class="msg_item">
+				<div class="msg_time">12:23</div>
+				<div class="msg_content_layout flex-wrap">
+					<div class="msg_icon">
+						<img class="msg_icon_img" src="./image/default_head_pic.png">
+					</div>
+					<div class="msg_content msg_content_left box-shadow">
+						你好5
+					</div>
+					<div class="space flex-con"></div>
+				</div>
+			</div>
+			<div class="msg_item">
+				<div class="msg_time">12:23</div>
+				<div class="msg_content_layout flex-wrap">
+					<div class="msg_icon">
+						<img class="msg_icon_img" src="./image/default_head_pic.png">
+					</div>
+					<div class="msg_content msg_content_left box-shadow">
+						你好6
+					</div>
+					<div class="space flex-con"></div>
+				</div>
+			</div>
+			<div class="msg_item">
+				<div class="msg_time">12:23</div>
+				<div class="msg_content_layout flex-wrap">
+					<div class="msg_icon">
+						<img class="msg_icon_img" src="./image/default_head_pic.png">
+					</div>
+					<div class="msg_content msg_content_left box-shadow">
+						你好7
+					</div>
+					<div class="space flex-con"></div>
+				</div>
+			</div>
+			<div class="msg_item">
+				<div class="msg_time">12:23</div>
+				<div class="msg_content_layout flex-wrap">
+					<div class="msg_icon">
+						<img class="msg_icon_img" src="./image/default_head_pic.png">
+					</div>
+					<div class="msg_content msg_content_left box-shadow">
+						你好8
+					</div>
+					<div class="space flex-con"></div>
+				</div>
+			</div>
+			<div class="msg_item">
+				<div class="msg_time">12:23</div>
+				<div class="msg_content_layout flex-wrap">
+					<div class="msg_icon">
+						<img class="msg_icon_img" src="./image/default_head_pic.png">
+					</div>
+					<div class="msg_content msg_content_left box-shadow">
+						你好9
+					</div>
+					<div class="space flex-con"></div>
+				</div>
+			</div>
+			<div class="msg_item">
+				<div class="msg_time">12:23</div>
+				<div class="msg_content_layout flex-wrap">
+					<div class="msg_icon">
+						<img class="msg_icon_img" src="./image/default_head_pic.png">
+					</div>
+					<div class="msg_content msg_content_left box-shadow">
+						你好10
+					</div>
+					<div class="space flex-con"></div>
+				</div>
+			</div>
+			<div class="msg_item">
+				<div class="msg_time">12:23</div>
+				<div class="msg_content_layout flex-wrap">
+					<div class="msg_icon">
+						<img class="msg_icon_img" src="./image/default_head_pic.png">
+					</div>
+					<div class="msg_content msg_content_left box-shadow">
+						你好11
+					</div>
+					<div class="space flex-con"></div>
+				</div>
+			</div>
+			<div class="msg_item">
+				<div class="msg_time">12:23</div>
+				<div class="msg_content_layout flex-wrap">
+					<div class="msg_icon">
+						<img class="msg_icon_img" src="./image/default_head_pic.png">
+					</div>
+					<div class="msg_content msg_content_left box-shadow">
+						你好12
+					</div>
+					<div class="space flex-con"></div>
+				</div>
+			</div>
+			<div class="msg_item">
+				<div class="msg_time">12:23</div>
+				<div class="msg_content_layout flex-wrap">
+					<div class="msg_icon">
+						<img class="msg_icon_img" src="./image/default_head_pic.png">
+					</div>
+					<div class="msg_content msg_content_left box-shadow">
+						你好13
+					</div>
+					<div class="space flex-con"></div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+<script type="text/javascript" src="script/api.js"></script>
+<script type="text/javascript">
+	apiready = function() {
+		scrollToBottom();
+		fnOpenUIChatBox();
+	}
+	//scrollTop值超出实际值后，会自动底部对齐
+	function scrollToBottom(){
+		document.body.scrollTop = 2000000;
+	}
+
+	function fnOpenUIChatBox() {
+		var UIChatBox = api.require('UIChatBox');
+		UIChatBox.open({
+			emotionPath : 'widget://wgt/book_2_9_5/res/emotion',
+			texts : {
+				recordBtn : {
+					normalTitle : '按住 说话',
+					activeTitle : '松开 结束'
+				},
+				sendBtn : {
+					title : '发送'
+				}
+			},
+			styles : {
+				emotionBtn : {
+				},
+				extrasBtn : {
+					normalImg : 'widget://wgt/book_2_9_5/image/chat/chat_add.png'
+				},
+				inputBar : {
+					borderColor : '#dddddd',
+					bgColor : '#FFF'
+				},
+				speechBtn : {
+					normalImg : 'widget://wgt/book_2_9_5/image/chat/chat_voice.png'
+				},
+				recordBtn : {
+					normalBg : 'widget://wgt/book_2_9_5/image/chat/chat_record.png',
+					activeBg : 'widget://wgt/book_2_9_5/image/chat/chat_record.png',
+					color : '#6d6d6d',
+					size : 13
+				},
+				keyboardBtn : {
+				},
+			},
+			extras : {
+				titleSize : 13,
+				titleColor : '#888888',
+				btns : [{
+					title : '照片',
+					normalImg : 'widget://wgt/book_2_9_5/image/chat/chat_ablum.png'
+				}, {
+					title : '拍摄',
+					normalImg : 'widget://wgt/book_2_9_5/image/chat/chat_camera.png'
+				}]
+			}
+		}, function(ret, err) {
+			if (ret.eventType == "send") {
+			} else if (ret.eventType == "show") {
+				inputListener();
+				// addChatRecordLis();
+			} else if (ret.eventType == "clickExtras") {
+				if (ret.index == 0) {
+					clickSelectPicture("album");
+				} else {
+					clickSelectPicture("camera");
+				}
+			}
+		});
+	}
+
+	function clickSelectPicture(type){
+		api.getPicture({
+		    sourceType: type,
+		    encodingType: 'png',
+		    mediaValue: 'pic',
+		    destinationType: 'url',
+		}, function(ret, err) {
+		    if (ret) {
+		        alert(JSON.stringify(ret));
+		    } else {
+		        alert(JSON.stringify(err));
+		    }
+		});
+	}
+
+	var h1;
+	var h2;
+	function inputListener() {
+			var UIChatBox = api.require('UIChatBox');
+			UIChatBox.addEventListener({
+				target : 'inputBar',
+				name : 'move'
+			}, function(ret, err) {
+				if (ret) {
+					h1 = ret.inputBarHeight;
+					h2 = ret.panelHeight;
+					var systemType = api.systemType;
+					if (systemType == "ios") {
+						resetFrameAttr(h1 + h2);
+					}else {
+						resetFrameAttr(h1 + h2 + 15);
+					}
+				} else {
+					alert(JSON.stringify(err));
+				}
+			});
+			UIChatBox.addEventListener({
+				target : 'inputBar',
+				name : 'change'
+			}, function(ret, err) {
+				if (ret) {
+					h1 = ret.inputBarHeight;
+					h2 = ret.panelHeight;
+					var systemType = api.systemType;
+					if (systemType == "ios") {
+						resetFrameAttr(h1 + h2);
+					}else {
+						resetFrameAttr(h1 + h2 + 15);
+					}
+				} else {
+					alert(JSON.stringify(err));
+				}
+			});
+		}
+
+		function resetFrameAttr(h) {
+			api.setFrameAttr({
+				name : 'index_frm',
+				rect : {
+					x : 0,
+					y : 0,
+					h : api.winHeight - api.pageParam.headerH - h + 10
+				}
+			});
+			setTimeout(function(){
+				scrollToBottom();
+			},200)
+		}
+</script>
