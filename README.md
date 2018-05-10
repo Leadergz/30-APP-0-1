@@ -11,7 +11,7 @@ APICloud是以新的思想、新的技术、新的模式和新的工具来加速
 
 APICloud团队是国内最早一批进行Web与Native技术融合的实现者，10多年来见证了混合开发技术在国内“悄悄的、慢慢的”火起来的全过程。APICloud拥有着行业领先的高性能App混合渲染引擎，APICloud模块Store汇集了目前App开发需要使用的几乎所有主流API，并且一直在持续更新，我们希望能把一切好的功能加入到APICloud平台，目的就是能真正帮助开发者提高效率、降低成本、解决问题。
 
-访问APICloud平台www.apicloud.com，注册成为APICloud开发者，开始APICloud开发之旅吧！
+访问APICloud平台www.apicloud.com， 注册成为APICloud开发者，开始APICloud开发之旅吧！
 
 ### 如何阅读本书
 本书共包括三部分正文以及两个附录。
@@ -46,7 +46,7 @@ APICloud7天培训课是采用视频直播的方式讲解，讲师在现场一�
 ### 示例代码
 本书的项目源码和资源都放在GitHub仓库1里。我们后续也会通过这个开源分支来更新代码和教程，解决读者所提出的问题，并进行后续版本的适配和代码的优化。
 
-1https://github.com/apicloudcom/30-APP-0-1
+https://github.com/apicloudcom/30-APP-0-1
 
 ### 开发环境
 APICloud一直坚持多开发工具支持策略，开发者可以使用任意一款自己喜欢的主流编码工具开发APICloud App，只需要在这些工具中安装相应的APICloud插件就可以了，目前APICloud支持的开发工具包括：Atom、Sublime Text、Eclipse、WebStorm、VSCode等。本书通篇使用APICloud Studio 2作为开发工具，APICloud Studio 2是一款基于Atom进行扩展的全功能集成开发工具。读者可以阅读附录2来了解这款工具的详细使用。
@@ -54,7 +54,7 @@ APICloud一直坚持多开发工具支持策略，开发者可以使用任意一
 ### 联系我们
 由于编写时间仓促，书中难免会出现一些错误或者不准确的地方，恳请读者批评指正。如果你有更多的宝贵意见，欢迎到APICloud社区2和我们进行互动讨论。
 
-2https://community.apicloud.com/
+https://community.apicloud.com/
 
 
 
