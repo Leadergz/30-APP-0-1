@@ -1,0 +1,196 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>Hello APP</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+		<style>
+			header {
+				height: 44px;
+				background: #FFF;
+			}
+			.c_title {
+				height: 44px;
+				line-height: 44px;
+				text-align: center;
+				font-weight: bold;
+				position: relative;
+			}
+			.c_back_btn {
+				width: 44px;
+				height: 44px;
+				background: url(../image/back.png) no-repeat center;
+				background-size: 20px;
+			}
+			.c_input_div {
+				height: 28px;
+				margin-top: 8px;
+				margin-right: 8px;
+				background: #EEE;
+				border-radius: 14px;
+			}
+			.c_search_history {
+				background: rgba(0,0,0,0.5);
+			}
+			.c_search_history_item {
+				height: 40px;
+				line-height: 40px;
+				padding-left: 10px;
+				background: #FFF;
+				border-bottom: 1px solid #EEEEEE;
+			}
+			.c_search_history_clear {
+				height: 40px;
+				line-height: 40px;
+				padding-left: 10px;
+				background: #FFF;
+				border-bottom: 1px solid #EEEEEE;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body class="flex-wrap flex-vertical">
+		<header id="header" class="border-b">
+			<div class="c_title flex-wrap">
+				<div class="c_back_btn" onclick="api.closeWin();"></div>
+				<div class="c_input_div flex-con" id="input_div"></div>
+			</div>
+		</header>
+		<div class="c_search_history flex-con" id="search_history"></div>
+	</body>
+	<script type="text/template" id="history_list_tmplate">
+		{{~it:value:index}}
+		<div class="c_search_history_item" onclick="fnOnSelectSearch('{{=value}}')">
+			{{=value}}
+		</div>
+		{{~}}
+		<div class="c_search_history_clear" onclick="fnClearHistory()">
+			清除历史
+		</div>
+	</script>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/doT.min.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			fnSetHeaderStyle();
+			fnOpenUIInput();
+		};
+		function fnSetHeaderStyle() {
+			var header = $api.byId('header');
+			$api.fixStatusBar(header);
+			api.setStatusBarStyle({
+				style : 'dark',
+				color : 'dark'
+			});
+		}
+
+		function fnOpenUIInput() {
+			var UIInput = api.require('UIInput');
+			UIInput.open({
+				rect : {
+					x : 50,
+					y : $api.offset($api.byId("input_div")).t + 2,
+					w : $api.offset($api.byId("input_div")).w - 10,
+					h : 24
+				},
+				styles : {
+					bgColor : '#EEE',
+					size : 14,
+					color : '#000',
+					placeholder : {
+						color : '#ccc'
+					}
+				},
+				keyboardType : 'search',
+				autoFocus : false,
+				placeholder : '输入关键词'
+			}, function(ret) {
+				if (ret.eventType == 'show') {
+					getSearchHistory();
+				} else if (ret.eventType == 'search') {
+					fnOnSearchClick();
+				}
+			});
+		}
+
+		function getSearchHistory() {
+			var searchHistory = $api.getStorage('searchHistory');
+			if (searchHistory && searchHistory.length > 0) {
+				var data = searchHistory;
+				var list = $api.byId('search_history');
+				uz_doTList('history_list_tmplate', list, data, false);
+			}
+		}
+
+		function uz_doTList(templateId, listId, data, isAppend) {
+			var tempFn = doT.template($api.byId(templateId).innerHTML);
+			var resultText = tempFn(data);
+			if (isAppend) {
+				$api.append(listId, resultText);
+			} else {
+				$api.html(listId, resultText);
+			}
+			api.parseTapmode();
+		}
+
+		function fnOnSearchClick() {
+			var UIInput = api.require('UIInput');
+			UIInput.value(function(ret, err) {
+				if (ret) {
+					var searchStr = ret.msg;
+					if (searchStr != '') {
+						fnSearch(searchStr);
+						fnSaveStorage(searchStr);
+					}
+				}
+			});
+		}
+
+		function fnSaveStorage(searchStr) {
+			var searchHistory = $api.getStorage('searchHistory');
+			if (searchHistory) {
+				if (searchHistory.length > 4) {
+					searchHistory.splice(0, 1);
+				}
+			} else {
+				searchHistory = [];
+			}
+			if (fnIsExist(searchHistory, searchStr)) {
+				return;
+			}
+			searchHistory.push(searchStr);
+			$api.setStorage('searchHistory', searchHistory);
+		}
+
+		function fnClearHistory() {
+			$api.rmStorage('searchHistory');
+			$api.html($api.byId('search_history'), '');
+		}
+
+		function fnSearch(searchStr) {
+			alert("搜索:" + searchStr);
+		}
+
+		function fnIsExist(searchHistory, searchStr) {
+			if (searchHistory && searchHistory.length > 0) {
+				for (var i = 0; i < searchHistory.length; i++) {
+					if (searchHistory[i] == searchStr) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		function fnOnSelectSearch(searchStr) {
+			var UIInput = api.require('UIInput');
+			UIInput.value({
+				msg : searchStr
+			});
+			alert("搜索:" + searchStr);
+		}
+	</script>
+</html>
