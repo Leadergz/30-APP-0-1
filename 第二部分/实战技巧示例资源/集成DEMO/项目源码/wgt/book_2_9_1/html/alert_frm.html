@@ -1,0 +1,151 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"
+    />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>Alert警告框</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+        html,
+        body {
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0);
+            text-align: center;
+        }
+        .active {
+            background-color: rgb(230, 230, 230);
+        }
+        /* 遮罩 */
+		.mask {
+			box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+            padding-top: 60%;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(55, 55, 55, 0.3);
+		}
+        /* 遮罩end */
+        .tips {
+            border-radius: 10px;
+            margin: 0 30px 10px;
+            background-color: #FFF;
+            /* 模拟ios弹出窗动画 */
+            opacity: 0;
+            -webkit-transform: translate3d(0, 0, 0) scale(1.2);
+            transform: translate3d(0, 0, 0) scale(1.2);
+            -webkit-transition-property: -webkit-transform, opacity;
+            transition-property: transform, opacity;
+        }
+
+        .tips-title {
+            padding: 10px 0;
+            position: relative;
+            font-size: 18px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .tips-content {
+            padding: 10px 0 20px 0;
+            position: relative;
+        }
+
+        .tips-btn-sure {
+            border-radius: 0 0 10px 10px;
+            position: relative;
+            height: 54px;
+            line-height: 54px;
+            font-size: 16px;
+            color: #555;
+            /* border-radius: 5px; */
+        }
+
+        .tips-btn-sure:after {
+            content: '';
+            display: block;
+            position: absolute;
+            box-sizing: border-box;
+            width: 200%;
+            height: 200%;
+            border-top: 1px solid #ccc;
+            left: 0;
+            top: 0;
+            -webkit-transform: scale(.5, .5);
+            transform: scale(.5, .5);
+            -webkit-transform-origin: left top;
+            transform-origin: left top;
+        }
+        /* 弹出窗口动画class */
+        .tips-popup-show {
+            opacity: 1;
+            -webkit-transition-duration: 300ms;
+            transition-duration: 300ms;
+            -webkit-transform: translate3d(0, 0, 0) scale(1);
+            transform: translate3d(0, 0, 0) scale(1);
+        }
+        .tips-popup-hide {
+            opacity: 0;
+            -webkit-transition-duration: 300ms;
+            transition-duration: 300ms;
+            -webkit-transform: translate3d(0, 0, 0) scale(0.8);
+            transform: translate3d(0, 0, 0) scale(0.8);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mask">
+        <div class="tips">
+            <div class="tips-title">alert窗口</div>
+            <div class="tips-content">这是一个测试alert窗口！</div>
+            <div class="tips-btn-sure" tapmode="active" onclick="touchSureBtn();">确定</div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+    apiready = function () {
+        setShowMethod(); // 页面显示后，屏蔽其他返回方法
+        popupAnimation('show'); // 初始化时执行窗口动画
+    };
+
+    function setShowMethod() {  // 设置显示方法
+        // 设置禁止 keyBack及滑动返回（跨页面远程调用）
+        api.execScript({
+            name: api.pageParam.cb_win,
+            frameName: api.pageParam.cb_frm,
+            script: api.pageParam.init_fun + '();'
+        });
+    }
+
+    function touchSureBtn() { // 确定按钮点击事件
+        // 执行远程关闭方法
+        api.execScript({
+            name: api.pageParam.cb_win,
+            frameName: api.pageParam.cb_frm,
+            script: api.pageParam.cb_fun + '();'
+        });
+        //关闭动画执行
+        popupAnimation('hide')
+    }
+
+
+    function popupAnimation(state) {// 弹窗动画的状态
+        if(state) {
+            var tips = $api.dom('.tips');
+            switch (state) {
+                case 'show':
+                    $api.addCls(tips, 'tips-popup-show');
+                    break;
+                case 'hide':
+                    $api.addCls(tips, 'tips-popup-hide');
+                    break;
+            }
+        }
+    }
+</script>
+
+</html>
