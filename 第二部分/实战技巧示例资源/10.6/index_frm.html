@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"/>
+    <title>调用任意App</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css" />
+    <link rel="stylesheet" type="text/css" href="./css/box.css" />
+	<script type="text/javascript" src="./script/public.js"></script>
+    <style>
+    	
+    </style>
+    <script type="text/javascript">
+		
+		apiready = function(){
+			//监听当前应用被其他应用调用事件
+			api.addEventListener({
+				name:'appintent'
+			}, function(ret, err) {
+				var appParam = api.appParam;
+				if(appParam && appParam.sid){
+				  var sid = appParam.sid;
+				  var type = appParam.type;
+				}
+			});
+		}
+		
+		function jumpToMarket(ident){
+			var identifier = '';
+			if('qq' == ident){
+				identifier = 'com.tencent.mobileqq';
+			}else if('mm' == ident){
+				identifier = 'com.tencent.mm';
+			}else{
+				alert('暂不支持该打开App');
+				return;
+			}
+			window.location.href = "market://details?id=" + identifier;
+		}
+		
+		function uninstallapp(){
+			var pkg = $('appPkg').value;
+			if(!pkg){
+				alert('请输入应用包名');
+				return;
+			}
+			api.unInstallApp({
+			    packageName: pkg
+			});
+		}
+		
+		function installapp(){
+			var uri = $('appUri').value;
+			if(!uri){
+				alert('应用资源地址不能为空');
+				return;
+			}
+			api.installApp({
+			    appUri: uri
+			});
+		}
+		
+		function appinstalled(){
+			var bundle = $('appBundle').value;
+			if(!bundle){
+				alert('应用资源地址不能为空');
+				return;
+			}
+			var isi = api.appInstalled({
+				sync: true, 
+			    appBundle: bundle
+			});
+			alert(isi ? '已安装' : '未安装');
+		}
+		
+		
+		
+	</script>
+</head>
+<body>
+    <div >
+        <div id="wrap"> 
+            <div>
+            	<div class='itemtitle'>1、通过A标签跳转应用市场</div>
+            		<div class="clickbtn" >
+	            		<a href="market://details?id=com.tencent.mm" >给微信评分</a>
+	            	</div>
+	            <div class='itemtitle'>2、通过JS操作跳转应用市场</div>
+	            	<div class="clickbtn" onclick="jumpToMarket('qq')">给QQ评分</div>
+					<div class="clickbtn" onclick="jumpToMarket('mm')">给微信评分</div>
+	            <div class='itemtitle'>3、卸载APP（仅支持Android）</div>
+	            	<lable>请输入被卸载APP的包名</lable><br>
+            		<input type='text' id='appPkg' value='com.tencent.mm' /><br>
+	            	<div class="clickbtn" tapmode='' onclick="uninstallapp()">点击卸载</div>
+	            <div class='itemtitle'>4、判断APP是否安装</div>
+	            	<lable>对应APP的信息。Android平台为应用包名，iOS平台为应用定义的URL Scheme。iOS中的URL Scheme与包名不一样，一个应用只有一个包名，但是可以配置多个URL Scheme</lable><br>
+            		<input type='text' id='appBundle' value='com.tencent.mm' /><br>
+	            	<div class="clickbtn" tapmode='' onclick="appinstalled()">点击调用</div>
+	            <div class='itemtitle'>5、安装APP</div>
+	            	<lable>请输入APP安装包地址。
+	            	Android上为apk包的本地路径，如file://xxx.apk；iOS上为应用在itunes里面的地址，或者安装包对应的plist文件地址</lable><br>
+            		<input type='text' id='appUri' value='' /><br>
+	            	<div class="clickbtn" tapmode='' onclick="installapp()">点击调用</div>
+	            <br>
+            </div>
+        </div>   
+    </div>
+</body>
+</html>

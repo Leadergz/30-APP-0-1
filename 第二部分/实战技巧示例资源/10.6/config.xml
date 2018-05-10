@@ -1,0 +1,10 @@
+ <widget id="A00000000106"  version="0.0.1">
+    <name>调用任意App</name>
+    <description>Example For APICloud.</description>
+    <author email="pomelo@apicloud.com" href="http://www.apicloud.com">APICloud</author>
+    <content src="index.html" />
+    <preference name="pageBounce" value="false"/>
+	<preference name="debug" value="false"/>
+	<preference name="statusBarAppearance" value="true" />
+	<preference name="urlScheme" value="pomelo" />
+</widget>
