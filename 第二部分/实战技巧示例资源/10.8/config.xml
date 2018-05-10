@@ -1,0 +1,12 @@
+ <widget id="A0000000000108"  version="0.0.1">
+    <name>事件示例</name>
+    <description>
+        Example For APICloud.
+    </description>
+    <author email="pomelo@apicloud.com" href="http://www.apicloud.com">APICloud</author>
+    <content src="index.html" />
+    <preference name="pageBounce" value="false"/>
+	<preference name="debug" value="false"/>
+	<preference name="statusBarAppearance" value="true" />
+	
+</widget>
