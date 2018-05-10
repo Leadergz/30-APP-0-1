@@ -1,0 +1,11 @@
+ <widget id="A0000000000113"  version="0.0.1">
+    <name>登录优化</name>
+    <description>
+        Example For APICloud.
+    </description>
+    <author email="pomelo@apicloud.com" href="http://www.apicloud.com">APICloud</author>
+    <content src="home.html" />
+    <preference name="pageBounce" value="false"/>
+	<preference name="statusBarAppearance" value="true" />
+	
+</widget>

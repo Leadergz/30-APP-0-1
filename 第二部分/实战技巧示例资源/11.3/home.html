@@ -1,0 +1,60 @@
+<!doctype html>
+<html >
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"/>
+	<title>登录优化</title>
+	<link rel="stylesheet" type="text/css" href="./css/api.css" />
+    <link rel="stylesheet" type="text/css" href="./css/box.css" />
+    <script type="text/javascript" src="./script/public.js"></script>
+</head>
+<body>
+    <div id="wrap">
+        <div id='header'>
+		    <div class="back" tapmode="back-active" onclick="api.closeWin()" >返回</div>
+		        <h1>登录优化</h1>
+		    <div class="adpt" ></div>
+		</div>
+        <div id="main">
+                我是Home页
+        </div>
+        <div id="footer">
+            <h5>©2018</h5>
+        </div>
+    </div>
+    
+</body>
+<script type="text/javascript">
+
+	function checkLogin(){
+		var login = getPro('is_login');
+		  if(!login){
+			//未登录，跳转登录页
+			api.openWin({
+			  name:'login',
+			  url:'./html/login.html'
+			});
+		  }
+		  return login;
+	}
+
+	apiready = function(){
+		api.addEventListener({
+			name:'login_success'
+		}, function(ret){
+			//收到登录成功事件，刷新数据
+			refreshData();
+		});
+		if(checkLogin()){
+			//已登录状态，直接刷新数据
+			refreshData();
+		}
+	}
+
+	function refreshData(){
+		$('main').innerHTML = '数据刷新成功！';
+	}
+    
+    
+</script>
+</html>

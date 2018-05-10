@@ -1,0 +1,12 @@
+ <widget id="A0000000000114"  version="0.0.1">
+    <name>同步异步接口</name>
+    <description>
+        Example For APICloud.
+    </description>
+    <author email="pomelo@apicloud.com" href="http://www.apicloud.com">APICloud</author>
+    <content src="index.html" />
+    <preference name="pageBounce" value="false"/>
+	<preference name="statusBarAppearance" value="true" />
+	<feature name="fs" />
+	<feature name="signature" />
+</widget>

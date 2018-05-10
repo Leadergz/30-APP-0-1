@@ -1,0 +1,61 @@
+<!doctype html>
+<html >
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"/>
+	<title>登录界面</title>
+	<link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/box.css" />
+    <script type="text/javascript" src="../script/public.js"></script>
+</head>
+<body>
+    <div id="wrap">
+        <div id='header'>
+			<h1>登录界面</h1>
+		</div>
+        <div id="main">
+			<br>
+			<br>
+            <div class="clickbtn" tapmode="active" onclick="login()" >点击我登录</div>
+        </div>
+    </div>
+    
+</body>
+<script type="text/javascript">
+
+	function login(){
+		api.showProgress();
+		//模拟登录效果
+		setTimeout(loginSuccess, 2000);
+	}
+
+	apiready = function(){
+		//监听android设备物理back
+		api.addEventListener({
+			name:'keyback'
+		}, function(ret){
+			closeApp();
+		});
+	}
+
+	function loginSuccess(){
+		setPro('is_login', 'true');//存储登录状态
+		api.toast({msg:'登录成功!', global:true});
+		var jsfun = 'refreshData()';
+		api.sendEvent({//发送登录成功事件
+			name: 'login_success'
+		});
+		api.closeWin({
+		animation:{
+			type:'fade',
+			duration:250
+		  }
+		});
+	}
+    
+	function closeApp(){
+		api.closeWidget();
+	}
+    
+</script>
+</html>
