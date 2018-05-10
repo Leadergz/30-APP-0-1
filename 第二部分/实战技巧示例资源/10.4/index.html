@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>Hello APP</title>
+		<link rel="stylesheet" type="text/css" href="css/api.css" />
+		<link id="theme" rel="stylesheet" type="text/css" href="css/wihte.css" />
+		<style type="text/css">
+			body, html {
+				height: 100%;
+				overflow: hidden;
+			}
+			.c_change_css {
+				width: 100%;
+				height: 50px;
+				margin-top: 20px;
+				line-height: 50px;
+				text-align: center;
+				border: 1px solid #CCC;
+				box-sizing: border-box;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="c_change_css" tapmode onclick="fnOpenChangeBgWin()">
+			选择皮肤
+		</div>
+	</body>
+	<script type="text/javascript" src="script/api.js"></script>
+	<script type="text/javascript">
+		window.onload = function() {
+			fnInitBg();
+		};
+	
+		apiready = function() {
+		};
+		
+		function fnInitBg(){
+			var theme = $api.getStorage('theme');
+			var oTheme = document.getElementById('theme');
+			if(theme == "white"){
+				oTheme.href = "css/wihte.css";
+			}else{
+				oTheme.href = "css/black.css";
+			}
+		}
+		
+		function fnOpenChangeBgWin(){
+			api.openWin({
+				name : 'main',
+				url : 'html/main.html'
+			});
+		}
+	</script>
+</html>
