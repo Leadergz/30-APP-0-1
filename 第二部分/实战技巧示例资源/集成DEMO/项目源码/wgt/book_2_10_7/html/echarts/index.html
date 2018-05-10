@@ -1,0 +1,165 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"
+    />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>底部导航</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+        header {
+          position: relative;
+          font-size: 18px;
+          line-height: 44px;
+          text-align: center;
+          background-color: #81a9c3;
+          color: #000;
+          text-shadow: 1px 1px 1px #fff;
+        }
+
+        header ul li {
+            display: none;
+            position: relative;
+        }
+
+        header ul li.active {
+            display: block;
+        }
+
+        #footer {
+              background-color: #81a9c3;
+        }
+
+        #footer ul li {
+            height: 56px;
+            line-height: 56px;
+            font-size: 16px;
+            color: #333;
+            background-size: auto 30px;
+            text-align: center;
+        }
+
+        #footer ul li.active {
+            color: #8c3939;
+            font-weight: bold;
+        }
+
+        .flex-con {
+            overflow: auto
+        }
+
+        .close {
+            position: absolute;
+            left: 10px;
+            bottom: 0;
+            width: 44px;
+            height: 44px;
+            background: url(../../../../image/back.png) no-repeat center;
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <!-- 头部 -->
+        <header>
+            <ul>
+                <li class="border-b active">三大产业占比</li>
+                <li class="border-b">某网站一周访问量</li>
+                <li class="border-b">一周最高气温变化</li>
+                <li class="border-b">一年降水量及气温表</li>
+            </ul>
+            <div class="close" tapmode onclick="api.closeWin()"></div>
+        </header>
+        <!-- 中间部分 -->
+        <div id="main" class="flex-con">
+
+        </div>
+        <!-- 底部导航 -->
+        <div id="footer" class="border-t">
+            <ul class="flex-wrap">
+                <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con active">饼状图</li>
+                <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con">柱状图</li>
+                <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con">折线图</li>
+                <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con">折柱图</li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript">
+    var headerH,footerH;
+    apiready = function () {
+        var header = $api.dom('header');
+        headerH = $api.fixStatusBar(header);
+    		footerH = $api.fixTabBar($api.byId('footer'));
+        api.setStatusBarStyle({
+            style: 'dark',
+            color: '#ececec'
+        });
+        //打开frames
+        funIniGroup();
+    }
+
+    function funIniGroup() {
+        // 获取header元素下面所有的li元素
+        var eHeaderLis = $api.domAll('header li'),
+            frames = [];
+        // 定义一个空数组，将4个frame页面分别添加进这个数组
+        for (var i = 0, len = eHeaderLis.length; i < len; i++) {
+            // 利用数组的push方法来添加frame
+            frames.push({
+                name: 'frame' + i,
+                url: './frame' + i + '.html',
+                bgColor: '#fff',
+                bounces: false
+            })
+        }
+        // 使用我们的api对象的方法打开frames组
+        api.openFrameGroup({
+            name: 'group',
+            scrollEnabled: false,
+            rect: {
+                x: 0,
+                marginTop: headerH,   //打开frame的起始点Y的位置是头部的高度
+                marginBottom: footerH,
+                w: 'auto',  //frame的宽度为屏幕的宽度
+            },
+            index: 0,
+            frames: frames
+        }, function (ret, err) {
+
+        });
+    }
+
+    // 随意切换按钮
+    function randomSwitchBtn(tag) {
+        // 如果当前所点击的按钮已有类active(即为正打开的frame),则不做操作
+        if (tag == $api.dom('#footer li.active')) return;
+        var eFootLis = $api.domAll('#footer li'),
+            eHeaderLis = $api.domAll('header li'),
+            index = 0;
+        for (var i = 0, len = eFootLis.length; i < len; i++) {
+            if (tag == eFootLis[i]) {
+                index = i;
+            } else {
+                // 不是当前所选中的按钮则移除相应的active样式
+                $api.removeCls(eFootLis[i], 'active');
+                $api.removeCls(eHeaderLis[i], 'active');
+            }
+        }
+        // 选中当前按钮头部和底部导航则添加上相应的active样式，并且记录下当前所打开的frame的Index
+        $api.addCls(eFootLis[index], 'active');
+        $api.addCls(eHeaderLis[index], 'active');
+        api.setFrameGroupIndex({
+            name: 'group',
+            index: index
+        });
+    }
+</script>

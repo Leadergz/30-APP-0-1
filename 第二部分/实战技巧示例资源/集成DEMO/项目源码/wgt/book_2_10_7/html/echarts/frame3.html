@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>折柱图</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            background: #0f4359;
+        }
+
+        #histogramAndline {
+            width: 100%;
+            height: 100%;
+            padding-top: 20px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 折柱图 -->
+    <div id="histogramAndline"></div>
+</body>
+<script type="text/javascript" src="../../script/echarts.js"></script>
+
+<script>
+    var myChart4 = echarts.init(document.getElementById('histogramAndline'));
+    var option4 = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                crossStyle: {
+                    color: '#eaedf0'
+                }
+            }
+        },
+        toolbox: {
+            feature: {
+                restore: {
+                    show: true
+                },
+                saveAsImage: {
+                    show: true
+                },
+                textStyle: {
+                    color: '#eaedf0'
+                }
+            }
+        },
+        legend: {
+            data: ['降水量', '平均温度'],
+            padding: [10, 0, 0, 0],
+            textStyle: {
+                color: '#eaedf0'
+            }
+        },
+        xAxis: [{   //x轴样式
+            type: 'category',
+            data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+            axisPointer: {
+                type: 'shadow'
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#b3b0ae'
+                }
+            },
+            axisLabel: {
+                textStyle: {
+                    color: '#77d8ed' //坐标值得具体的颜色
+
+                }
+            }
+        }],
+        yAxis: [{     //Y轴样式
+            type: 'value',
+            name: '水量(ml)',
+            min: 0,
+            max: 100,
+            interval: 20,
+            axisLine: {
+                lineStyle: {
+                    color: '#b3b0ae'
+                }
+            },
+            axisLabel: {
+                formatter: '{value}',
+                textStyle: {
+                    color: '#77d8ed' //坐标值得具体的颜色
+
+                }
+            }
+        }, {
+            type: 'value',
+            name: '温度(°C)',
+            min: 0,
+            max: 25,
+            interval: 5,
+            axisLine: {
+                lineStyle: {
+                    color: '#b3b0ae'
+                }
+            },
+            axisLabel: {
+                formatter: '{value}',
+                textStyle: {
+                    color: '#77d8ed' //坐标值得具体的颜色
+
+                }
+            }
+        }],
+        series: [{
+            name: '降水量',
+            type: 'bar',
+            data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 89.6, 90.2, 48.7, 18.8, 6.0, 2.3],
+            itemStyle: {
+                //通常情况下：
+                normal: {
+                    //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
+                    color: function(params) {
+                        var colorList = ['#c23531'];
+                        return colorList[params.dataIndex];
+                    }
+                }
+            }
+        }, {
+            name: '平均温度',
+            type: 'line',
+            itemStyle: {
+                normal: {
+                    lineStyle: {
+                        color: '#61a0a8'
+                    }
+                }
+            },
+            yAxisIndex: 1,
+            data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+        }]
+    };
+    // 生成图表
+    myChart4.setOption(option4);
+    // 自适应窗口尺寸
+    window.addEventListener("resize", function() {
+        myChart4.resize();
+    });
+</script>
+
+</html>

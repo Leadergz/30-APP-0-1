@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>入口页</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <style type="text/css">
+    html,body{
+        height: 100%;
+    }
+    header {
+        font-size: 18px;
+        line-height: 44px;
+        text-align: center;
+        background-color: #81a9c3;
+    		color: #000;
+        text-shadow: 1px 1px 1px #fff;
+    }
+    .header-item-left {
+        position: absolute;
+        left: 10px;
+        bottom: 0;
+        width: 44px;
+        height: 44px;
+        background: url(../../image/back.png) no-repeat center;
+        background-size: 20px 20px;
+    }
+    footer {
+        font-size: 14px;
+        line-height: 30px;
+        text-align: center;
+        background-color: #81a9c3;
+        color: #000;
+        text-shadow: 1px 1px 1px #fff;
+    }
+    </style>
+</head>
+<body class="flex-v">
+    <section class="flex-1"></section>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript">
+    var headerH,footerH;
+    var aMap, UIButton;
+    apiready = function() {
+      aMap = api.require('aMap');
+      // 引入地图模块，这里使用的是高德地图
+      UIButton = api.require('UIButton');
+      // 引入UIButton模块
+      openMap()
+    };
+    function openMap() {
+        var lon = 116.4021310000;
+        var lat = 39.9994480000;
+        aMap.open({
+            rect : {
+                x : 0,
+                y : headerH,
+                w : 'auto',
+                h : api.frameHeight - headerH - footerH
+            },
+            center : {
+                lon : lon,
+                lat : lat
+            },
+            showUserLocation : true,
+            zoomLevel : 14,
+            fixedOn : api.frameName,
+            fixed : true
+        }, function(ret, err) {
+            if (ret) {
+                var buttonId;
+                // 记录下来按钮的id，在点击按钮的时候，对这个按钮的状态进行更改
+                UIButton.open({
+                    rect : {
+                        x : api.frameWidth - 52,
+                        y : api.frameHeight - 140,
+                        w : 40,
+                        h : 40
+                    },
+                    corner : 5,
+                    bg : {
+                        normal : 'widget://wgt/book_2_10_9/image/dingwei.png',
+                        highlight : 'widget://wgt/book_2_10_9/image/dingwei_2.png',
+                        active : 'widget://wgt/book_2_10_9/image/dingwei_2.png'
+                    }, // 这里是按钮的三种样式
+                    fixedOn : api.frameName,
+                    fixed : true,
+                    move : false
+                }, function(ret, err) {
+                    if (ret && ret.eventType === 'show') {
+                        buttonId = ret.id
+                    }
+                    if (ret && ret.eventType === 'click') {
+                        // 在接收到按钮被点击的指令之后，更改按钮的状态未normal，用来改变按钮的样式，恢复未点击之前的样式
+                        UIButton.getState({
+                            id : buttonId
+                        }, function(ret, err) {
+                            if (ret.state === 'active') {
+                                UIButton.setState({
+                                    id : buttonId,
+                                    state : 'normal'
+                                })
+                            }
+                        });
+                        // 让地图回到中心点处
+                        aMap.setCenter({
+                            coords : {
+                                lon : lon,
+                                lat : lat
+                            }
+                        });
+                    }
+                })
+            }
+        });
+    }
+</script>
+</html>

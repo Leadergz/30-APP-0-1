@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>Hello APP</title>
+		<link rel="stylesheet" type="text/css" href="../../../css/api.css" />
+		<link id="theme" rel="stylesheet" type="text/css" href="../css/wihte.css" />
+		<style>
+			html,body{
+					height: 100%;
+			}
+			header {
+					font-size: 18px;
+					line-height: 44px;
+					text-align: center;
+					background-color: #81a9c3;
+					color: #000;
+					text-shadow: 1px 1px 1px #fff;
+			}
+			.header-item-left {
+					position: absolute;
+					left: 10px;
+					bottom: 0;
+					width: 44px;
+					height: 44px;
+					background: url(../../../image/back.png) no-repeat center;
+					background-size: 20px 20px;
+			}
+			footer {
+					font-size: 14px;
+					line-height: 30px;
+					text-align: center;
+					background-color: #81a9c3;
+					color: #000;
+					text-shadow: 1px 1px 1px #fff;
+			}
+			.c_change_css {
+				width: 100%;
+				height: 50px;
+				margin-top : 20px;
+				line-height: 50px;
+				text-align :center;
+				border : 1px solid #CCC;
+				box-sizing: border-box;
+			}
+		</style>
+	</head>
+	<body class="flex-v">
+    <section class="flex-1">
+			<div class="c_change_css" tapmode onclick="fnChangeWihteBg()">
+				日间模式
+			</div>
+			<div class="c_change_css" tapmode onclick="fnChangeBlackBg()">
+				夜间模式
+			</div>
+    </section>
+	</body>
+	<script type="text/javascript" src="../../../script/api.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			  fnInitBg();
+		};
+
+		function fnInitBg(){
+			var theme = $api.getStorage('theme');
+			var oTheme = document.getElementById('theme');
+			if(theme == "white"){
+				oTheme.href = "../css/wihte.css";
+			}else{
+				oTheme.href = "../css/black.css";
+			}
+		}
+
+		function fnChangeWihteBg(){
+			$api.setStorage("theme",'white');
+			fnInitBg();
+		}
+
+		function fnChangeBlackBg(){
+			$api.setStorage("theme",'black');
+			fnInitBg();
+		}
+	</script>
+</html>

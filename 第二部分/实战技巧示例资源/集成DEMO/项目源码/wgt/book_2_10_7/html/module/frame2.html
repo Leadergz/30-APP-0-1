@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>折线图</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+        .tableDetail {
+            width: 100%;
+            height: 150px;
+            /*background: pink;*/
+            position: absolute;
+            bottom: 100px;
+            left: 0;
+            color: #333;
+        }
+
+        p {
+            position: relative;
+            height: 30px;
+            line-height: 30px;
+            width: 50%;
+            /*background: pink;*/
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        p>span {
+            display: inline-block;
+            width: 30px;
+            height: 14px;
+            background: red;
+            position: absolute;
+            top: 8px;
+            left: 28%;
+        }
+
+        .tableDetail>p:first-child>span {
+            background: #185b20;
+        }
+
+        .tableDetail>p:nth-child(2)>span {
+            background: #660099;
+        }
+
+        .tableDetail>p:nth-child(3)>span {
+            background: #FF33FF;
+        }
+
+        .tableDetail>p:nth-child(4)>span {
+            background: #df6565;
+        }
+
+        .tableDetail>p:last-child>span {
+            background: #00CCFF;
+        }
+    </style>
+</head>
+
+<body>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript">
+    var UILineChart;
+    apiready = function() {
+      //引入我们的UILineChart模块
+        UILineChart = api.require('UILineChart');
+        //打开模块
+        UILineChart.open({
+            rect: {      //模块打开的位置和大小
+                x: 20,
+                y: 60,
+                w: 320,
+                h: 400
+            },
+            xAxis: {   //x轴信息
+                indexs: ['一模', '二模', '三模', '四模', '五模', '六模'],
+                screenXcount: 7
+            },
+            yAxis: {    //y轴信息
+                max: 100,
+                min: 0,
+                step: 10,
+                base: 0
+            },
+            datas: [   //数据显示
+                [71.5, 78.3, 76.3, 77.2, 78, 86]
+            ],
+            styles: {
+                xAxis: {     //x轴样式
+                    bg: '#b2dfee',
+                    markColor: '#888',
+                    markSize: 12
+                },
+                yAxis: {     //y轴样式
+                    bg: '#b2dfee',
+                    markColor: '#888',
+                    markSize: 12
+                },
+                coordinate: {   //坐标系样式
+                    bg: '#fcfcfc',
+                    color: '#cacaca',
+                    baseColor: 'bbb',
+                },
+                colors: ['#800080']     //多条折线的颜色
+            },
+            fixedOn: api.frameName,
+            fixed: false
+        }, function(ret, err) {
+            if (ret) {
+                console.log(JSON.stringify(ret));
+            } else {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+</script>
+
+</html>

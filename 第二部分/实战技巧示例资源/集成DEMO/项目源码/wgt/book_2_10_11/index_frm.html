@@ -1,0 +1,271 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"/>
+    <title>jpush</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css" />
+    <link rel="stylesheet" type="text/css" href="./css/box.css" />
+    <style>
+
+    </style>
+    <script type="text/javascript">
+
+		var jpush = null;
+		apiready = function(){
+	    	jpush = api.require('ajpush');
+	    	 api.addEventListener({name:'appintent'}, function(ret,err) {
+    			alert('通知被点击，收到数据：\n' + JSON.stringify(ret));//监听通知被点击后收到的数据
+    			if(ret && ret.appParam.ajpush){
+			        var ajpush = ret.appParam.ajpush;
+			        alert(ajpush);
+			        var id = ajpush.id;
+			        alert(id);
+			        var title = ajpush.title;
+			        var content = ajpush.content;
+			        var extra = ajpush.extra;
+			        alert(extra.aaaaa);
+			    }
+	  		 })
+			 api.addEventListener({name:'pause'}, function(ret,err) {
+	    		onPause();//监听应用进入后台，通知jpush暂停事件
+	  		 })
+
+	  		 api.addEventListener({name:'resume'}, function(ret,err) {
+	    		onResume();//监听应用恢复到前台，通知jpush恢复事件
+	  		 })
+	    }
+
+		function initJPush(){
+			jpush.init(function(ret, err){
+				if(ret && ret.status){
+					alert('操作成功!');
+				}else{
+					alert('操作失败!');
+				}
+			});
+		}
+
+		function setListener(){
+			jpush.setListener(function(ret, err){
+				if(ret){
+					api.alert({msg: '收到消息：\n' + JSON.stringify(ret)});
+					//notify();//也可自行调用api.notification弹出本地通知，见notify()函数
+				}
+			});
+			api.alert({msg: '设置成功，收到的消息将通过此函数回调给网页，不再弹出通知到状态栏'});
+		}
+
+		function removeListener(){
+			jpush.removeListener();
+			api.alert({msg: '移除成功，移除后网页将不再收到消息，消息将弹出通知到状态栏'});
+		}
+
+		function bindAliasAndTags(){
+			var alias = valueOf('alias');
+			var tags = valueOf('tags');
+			if(!alias && !tags){
+				alert('别名和标签至少传一个');
+				return;
+			}
+			if(!alias){
+				alias = '';
+			}
+			if(tags){
+				tags = tags.split(',');
+        alert(tags);
+			}
+
+			jpush.bindAliasAndTags({
+				alias:alias,
+				tags:tags
+			}, function(ret, err){
+				alert('处理结果：\n' + JSON.stringify(ret));
+			});
+		}
+
+		//统计-app恢复
+		function onResume(){
+			jpush.onResume();
+			console.log('JPush onResume');
+		}
+
+		//统计-app暂停
+		function onPause(){
+			jpush.onPause();
+			console.log('JPush onPause');
+		}
+
+		function clearNotification(id){
+			if(!id){
+				id = -1;
+			}
+			jpush.clearNotification({id:id});
+		}
+
+		function setPushTime(){
+			var days = valueOf('days');
+			var startHour = valueOf('startHour');
+			var endHour = valueOf('endHour');
+			if(!days){
+				alert('日期不能为空');
+				return;
+			}
+			days = days.split(',');
+			if(!startHour){
+				startHour = 0;
+			}
+			if(!endHour){
+				endHour = 23;
+			}
+			jpush.setPushTime({
+				days: days,
+				startHour: startHour,
+				endHour: endHour
+			}, function(ret, err){
+				if(ret && ret.status){
+					alert('操作成功!');
+				}else{
+					alert('操作失败!');
+				}
+			});
+		}
+
+		function setSilenceTime(){
+			var startHour = valueOf('startHour1');
+			var endHour = valueOf('endHour1');
+			var startMinute = valueOf('startMinute1');
+			var endMinute = valueOf('endMinute1');
+			if(!startHour){
+				startHour = 0;
+			}
+			if(!endHour){
+				endHour = 23;
+			}
+			if(!startMinute){
+				startMinute = 0
+			}
+			if(!endMinute){
+				endMinute = 50;
+			}
+			jpush.setSilenceTime({
+				startHour: startHour,
+				endHour: endHour,
+				startMinute: startMinute,
+				endMinute: endMinute
+			}, function(ret, err){
+				if(ret && ret.status){
+					alert('操作成功!');
+				}else{
+					alert('操作失败!');
+				}
+			});
+		}
+
+		function stopPush(){
+			jpush.stopPush(function(ret, err){
+				if(ret && ret.status){
+					alert('操作成功!');
+				}else{
+					alert('操作失败!');
+				}
+			});
+		}
+
+		function resumePush(){
+			jpush.resumePush(function(ret, err){
+				if(ret && ret.status){
+					alert('操作成功!');
+				}else{
+					alert('操作失败!');
+				}
+			});
+		}
+
+		function isPushStopped(){
+			jpush.isPushStopped(function(ret, err){
+				if(ret.isStopped == 1){
+					alert('已停止');
+				}else{
+					alert('未停止');
+				}
+			});
+		}
+
+		function getId(){
+			jpush.getRegistrationId(function(ret, err){
+				alert(JSON.stringify(ret));
+			});
+		}
+
+		function valueOf(id){
+			if(!id){
+				return '';
+			}
+			return document.getElementById(id).value;
+		}
+
+		var count = 0;
+		function notify(){
+			count++;//便于区分计数
+			api.notification({
+				vibrate:[300, 500],
+				sound:'widget://wgt/book_2_10_11/res/horse.ogg',//自定义声音
+			    notify: {
+			    	title: '通知标题' + count, //标题，默认值为应用名称，只Android有效
+			        content: '通知内容' + count, //内容，默认值为'有新消息'
+			        extra:{}, //传递给通知的数据，在通知被点击后，该数据将通过监听函数回调给网页
+			        updateCurrent:false    //是否覆盖更新已有的通知，取值范围true|false。只Android有效
+			    }
+			}, function(ret, err){
+			    if(ret){
+			         alert(JSON.stringify(ret));
+			    }else{
+			         alert(JSON.stringify(err));
+			    }
+			});
+		}
+	</script>
+</head>
+<body>
+    <div id="wrap">
+    	<div class='itemtitle'>1、基本操作</div>
+        	<div class="clickbtn" tapmode="active" onclick="initJPush()" >初始化推送</div>
+        	<div class="clickbtn" tapmode="active" onclick="setListener()" >在网页中监听收到的消息</div>
+        	<div class="clickbtn" tapmode="active" onclick="removeListener()" >移除消息监听</div>
+        	<div class="clickbtn" tapmode="active" onclick="clearNotification()" >清除所有极光推送发出的通知</div>
+    		<div class="clickbtn" tapmode="active" onclick="stopPush()" >停止推送</div>
+    		<div class="clickbtn" tapmode="active" onclick="resumePush()" >恢复推送</div>
+    		<div class="clickbtn" tapmode="active" onclick="isPushStopped()" >判断推送是否停止</div>
+    	<div class='itemtitle'>2、绑定别名和标签</div>
+    		<lable>输入别名：</lable><br>
+    		<input type='text' id='alias' value="" placeholder="输入别名"/><br>
+    		<lable>输入标签：</lable><br>
+    		<input type='text' id='tags' value="" placeholder="输入标签，半角逗号隔开"/>
+    		<div class="clickbtn" tapmode="active" onclick="bindAliasAndTags()" >进行绑定</div>
+    	<div class='itemtitle'>3、设置推送允许推送的时间</div>
+    		<lable>允许使用的日期：</lable><br>
+    		<input type='text' id='days' value="" placeholder="0-6，半角逗号隔开"/><br>
+    		<lable>允许的开始时间：</lable><br>
+    		<input type='number' id='startHour' value="" placeholder="开始时间，0-23"/><br>
+    		<lable>允许的结束时间：</lable><br>
+    		<input type='number' id='endHour' value="" placeholder="结束时间，0-23"/><br>
+    		<div class="clickbtn" tapmode="active" onclick="setPushTime()" >设置</div>
+    	<br>
+    	<div class='itemtitle'>4、设置通知静默时间</div>
+    		<lable>静默开始时：</lable><br>
+    		<input type='number' id='startHour1' value="" placeholder="开始时，0-23"/><br>
+    		<lable>静默开始分：</lable><br>
+    		<input type='number' id='startMinute1' value="" placeholder="开始分，0-59"/><br>
+    		<lable>静默结束时：</lable><br>
+    		<input type='number' id='endHour1' value="" placeholder="结束时，0-23"/><br>
+    		<lable>静默结束分：</lable><br>
+    		<input type='number' id='endMinute1' value="" placeholder="结束分，0-59"/><br>
+    		<div class="clickbtn" tapmode="active" onclick="setSilenceTime()" >设置</div>
+    	<div class='itemtitle'>5、获取RegistrationId</div>
+			<div class="clickbtn" tapmode="active" onclick="getId()" >获取</div><br>
+		<div class='itemtitle'>6、本地通知</div>
+			<div class="clickbtn" tapmode="active" onclick="notify()" >点击发出</div><br>
+    </div>
+</body>
+</html>

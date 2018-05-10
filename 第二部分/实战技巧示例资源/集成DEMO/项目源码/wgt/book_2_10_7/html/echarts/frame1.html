@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>柱状图</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            background: #0f4359;
+        }
+
+        #histogramChart {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 柱状图 -->
+    <div id="histogramChart"></div>
+</body>
+<script type="text/javascript" src="../../script/echarts.js"></script>
+<script type="text/javascript">
+    var myChart2 = echarts.init(document.getElementById('histogramChart'));
+    var option2 = {
+        title: {
+            text: '一周访问量',
+            padding: [20, 0, 0, 0],
+            x: 'center',
+            textStyle: {
+                color: '#eaedf0'
+            }
+        },
+        color: ['#3398DB'],
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {     // 坐标轴指示器，坐标轴触发有效
+                type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: [{
+            type: 'category',
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            axisTick: {
+                alignWithLabel: true
+            },
+            axisLabel: {
+                textStyle: {
+                    color: '#77d8ed' //坐标值得具体的颜色
+                }
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#b3b0ae'
+                }
+            }
+        }],
+        yAxis: [{
+            type: 'value',
+            axisLabel: {
+                textStyle: {
+                    color: '#77d8ed' //坐标值得具体的颜色
+
+                }
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#b3b0ae'
+                }
+            }
+        }],
+        series: [{
+            name: '直接访问',
+            type: 'bar',
+            barWidth: '60%',
+            data: [180, 52, 200, 230, 390, 330, 220]
+        }]
+    };
+    //生成图表
+    myChart2.setOption(option2);
+    // 自适应窗口尺寸
+    window.addEventListener("resize", function() {
+        myChart2.resize();
+    });
+</script>
+
+</html>

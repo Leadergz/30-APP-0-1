@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"/>
+    <title>事件示例</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css" />
+    <link rel="stylesheet" type="text/css" href="./css/box.css" />
+    <style>
+    	
+    </style>
+    <script type="text/javascript">
+		function ajaxIfOnline() {
+			if('none' == api.connectionType){
+				alert('当前无网络');
+				return;
+			}
+			api.showProgress();
+			api.ajax({
+				url:'http://www.w3school.com.cn/ajax/demo_get.asp',
+				dataType: 'text'
+			}, function(ret, err) {
+				api.hideProgress();
+				if (ret) {
+					alert("成功.请求结果：\n" + JSON.stringify(ret));
+				} else {
+					alert('失败.网络状态码:' + err.statusCode + '\n错误码:' + err.code + '\n错误信息:' + err.msg);
+				}
+			});
+		}
+	</script>
+</head>
+<body>
+    <div id="wrap">
+		<div class='itemtitle'>window.onload和apiready的介绍以及相关代码见index.html</div><br><br>
+    	<div class='itemtitle'>1、在发送网络请求之前进行网络状态判断</div>
+			<lable>可分别在断开和连接手机网络的情况下，点击以下按钮观察提示信息</lable><br>
+        	<div class="clickbtn" tapmode="active" onclick="ajaxIfOnline()" >调用操作</div>
+    	<br> 
+    </div>
+</body>
+</html>

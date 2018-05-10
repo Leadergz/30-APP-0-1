@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>柱状图</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+        .tableDetail {
+            width: 100%;
+            height: 150px;
+            /*background: pink;*/
+            position: absolute;
+            bottom: 100px;
+            left: 0;
+            color: #333;
+        }
+
+        p {
+            position: relative;
+            height: 30px;
+            line-height: 30px;
+            width: 50%;
+            /*background: pink;*/
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        p>span {
+            display: inline-block;
+            width: 30px;
+            height: 14px;
+            background: red;
+            position: absolute;
+            top: 8px;
+            left: 28%;
+        }
+
+        .tableDetail>p:first-child>span {
+            background: #185b20;
+        }
+
+        .tableDetail>p:nth-child(2)>span {
+            background: #660099;
+        }
+
+        .tableDetail>p:nth-child(3)>span {
+            background: #FF33FF;
+        }
+
+        .tableDetail>p:nth-child(4)>span {
+            background: #df6565;
+        }
+
+        .tableDetail>p:last-child>span {
+            background: #00CCFF;
+        }
+    </style>
+</head>
+
+<body>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript">
+    var UIBarChart;
+    apiready = function() {
+      //引入我们的UIBarChart模块
+        UIBarChart = api.require('UIBarChart');
+        //打开模块
+        UIBarChart.open({
+            rect: {     //模块打开的位置和大小
+                x: 30,
+                y: api.frameHeight / 2 - 220,
+                w: api.frameWidth - 60,
+                h: 400
+            },
+            yAxis: {     //y轴信息
+                max: 100,
+                min: 0,
+                step: 10
+            },
+            data: [{     //柱状图关键结点的数据
+                xAxis: '一模',
+                yAxis: 75.5
+            }, {
+                xAxis: '二模',
+                yAxis: 79.3
+            }, {
+                xAxis: '三模',
+                yAxis: 74.3
+            }, {
+                xAxis: '四模',
+                yAxis: 78.2
+            }, {
+                xAxis: '五模',
+                yAxis: 80
+            }, {
+                xAxis: '六模',
+                yAxis: 85
+            }],
+            styles: {    //模块视图内元素样式设置
+                yAxis: {    //y轴样式
+                    width: 30,
+                    bg: '#B2DFEE',
+                    markColor: '#fff',
+                    markSize: 12
+                },
+                xAxis: {    //x轴样式
+                    height: 30,
+                    bg: '#B2DFEE',
+                    markColor: '#fff',
+                    markSize: 12
+                },
+                coordinate: {    //坐标系样式,坐标系背景颜色
+                    bg: '#FCFCFC',
+                },
+                bar: {     //柱子的样式
+                    width: 25,
+                    bg: '#ececec',
+                    tint: '#8DB6CD',
+                    interval: 16
+                }
+            },
+            showData: true,   //是否显示该条目数据
+            fixedOn: api.frameName,
+            fixed: false
+        }, function(ret, err) {
+            if (ret) {
+                console.log(JSON.stringify(ret));
+            } else {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+</script>
+
+</html>

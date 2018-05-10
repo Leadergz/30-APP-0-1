@@ -1,0 +1,178 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"/>
+		<meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+		<title>首页</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css" />
+		<script type="text/javascript" src="../script/public.js"></script>
+		<style>
+			#footer {
+				width: auto;
+				height: 50px;
+				padding: 0 8px;
+				display: -webkit-box;
+				-webkit-box-orient: horizontal;
+				background-color: #81a9c3;
+			}
+			.tab-item {
+				height: 50px;
+				-webkit-box-flex: 1;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-box-pack: center;
+				-webkit-box-align: center;
+			}
+			center {
+				color: #FFF;
+				margin-top: 3px;
+				font-size: 0.7em;
+			}
+			#back > div {
+				width: 48px;
+				height: 48px;
+				background: url(../image/ic_back.png) no-repeat center;
+				background-size: 30px 30px;
+			}
+			#forward > div {
+				width: 48px;
+				height: 48px;
+				background: url(../image/ic_forward.png) no-repeat center;
+				background-size: 30px 30px;
+			}
+			#refresh > div {
+				width: 48px;
+				height: 48px;
+				background: url(../image/ic_refresh.png) no-repeat center;
+				background-size: 30px 30px;
+			}
+			.active {
+				background-color: #33B5E5;
+			}
+			#title{
+				width: 72%;
+		        white-space:nowrap;
+		        text-overflow:ellipsis;
+		        overflow: hidden;
+		        margin: 0 auto;
+			}
+
+			#header {
+				position: relative;
+		        height: 44px;
+		        font-size: 18px;
+		        line-height: 44px;
+		        text-align: center;
+		        background-color: #81a9c3;
+		    		color: #000;
+		        text-shadow: 1px 1px 1px #fff;
+		    }
+		</style>
+	</head>
+	<body>
+		<div id="wrap">
+			 <div id='header'>
+				<div class="back" tapmode="back-active" onclick="api.closeWin()" ></div>
+				<div id='title'></div>
+			</div>
+			<div id="main"></div>
+			<div id='footer'>
+				<div id='back' class='tab-item' tapmode='active' onclick='GoToHisBack()'>
+					<div></div>
+				</div>
+				<div id='forward' class='tab-item' tapmode='active' onclick='GoToHisForward()'>
+					<div></div>
+				</div>
+				<div id='refresh' class='tab-item' tapmode='active' onclick='GoToRefresh()'>
+					<div></div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../../script/api.js"></script>
+	<script type="text/javascript">
+		var home = 'https://docs.apicloud.com/';
+		var headerH;
+		apiready = function() {
+			fnSetHeaderStyle();
+			//使用margin布局，自动适应任何屏幕，适配带虚拟菜单栏的任意Android手机
+			var area = {
+				marginTop : $api.offset($api.byId("header")).h, //标题栏高度44\
+
+				marginBottom : $api.offset($api.byId("footer")).h//下导航栏高度50
+			}
+			api.openFrame({
+				name : 'frame',
+				url : home,
+				bounces : false,
+				rect : area,
+				progress : {//设置进度条类型和样式
+					type : 'page',
+					color : '#45C01A'
+				}
+			});
+			//监听Android back键，回退历史记录
+			api.addEventListener({
+				name : 'keyback'
+			}, function(ret, err) {
+				GoToHisBack();
+			});
+			//设置名为frame的Frame事件监听
+			api.setFrameClient({
+				frameName : 'frame'
+			}, function(ret) {
+				onFrameStateChange(ret);
+			});
+		};
+		function fnSetHeaderStyle() {
+			var header = $api.byId('header');
+			$api.fixStatusBar(header);
+			api.setStatusBarStyle({
+				style : 'dark',
+				color : 'dark'
+			});
+		}
+
+		function onFrameStateChange(ret) {
+			if (0 == ret.state) {//frame开始加载
+				//var url = ret.url;
+				//console.log('frame loading start: ' + url);
+			} else if (1 == ret.state) {//frame加载进度发生变化
+				//var p = ret.progress;
+				//console.log('frame loading: ' + p);
+			} else if (2 == ret.state) {//frame结束加载
+				//var url = ret.url;
+				//console.log('frame loading finish: ' + url);
+			} else if (3 == ret.state) {//frame标题发生变化
+				$('title').innerHTML = ret.title;
+			}
+		}
+
+		//历史记录后退
+		function GoToHisBack() {
+			api.historyBack({
+				frameName : "frame"
+			}, function(ret) {
+				if (!ret.status) {//没有历史记录了则关闭当前窗口
+					api.closeWin();
+				}
+			});
+		}
+
+		//历史记录前进
+		function GoToHisForward() {
+			api.historyForward({
+				frameName : "frame"
+			});
+		}
+
+		//刷新页面
+		function GoToRefresh() {
+			api.execScript({
+				frameName : 'frame',
+				script : 'location.reload();'
+			});
+		}
+	</script>
+</html>

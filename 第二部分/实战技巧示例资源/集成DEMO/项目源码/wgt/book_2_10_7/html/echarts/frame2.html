@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>折线图</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            background: #0f4359;
+        }
+
+        #lineChart {
+            width: 100%;
+            height: 100%;
+            padding-top: 30px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 折线图 -->
+    <div id="lineChart"></div>
+</body>
+<script type="text/javascript" src="../../script/echarts.js"></script>
+
+<script>
+    var myChart3 = echarts.init(document.getElementById('lineChart'));
+    var option3 = {
+        tooltip: {
+            trigger: 'axis'
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        xAxis: {   //x轴坐标样式
+            type: 'category',
+            boundaryGap: false,
+            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+            axisLabel: {
+                textStyle: {
+                    color: '#77d8ed' //坐标值得具体的颜色
+                }
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#b3b0ae'
+                }
+            }
+        },
+        yAxis: {    //y轴坐标样式
+            type: 'value',
+            axisLabel: {
+                formatter: '{value} °C'
+            },
+            axisLabel: {
+                formatter: '{value}°C',
+                textStyle: {
+                    color: '#77d8ed' //坐标值得具体的颜色
+
+                }
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#b3b0ae'
+                }
+            }
+        },
+        series: [{
+            name: '最高气温',
+            type: 'line',
+            data: [11, 11, 15, 13, 12, 13, 10],
+            markPoint: {
+                data: [{
+                    type: 'max',
+                    name: '最大值'
+                }]
+            }
+        }]
+    };
+    // 生成图表
+    myChart3.setOption(option3);
+    // 自适应窗口尺寸
+    window.addEventListener("resize", function() {
+        myChart3.resize();
+    });
+</script>
+
+</html>

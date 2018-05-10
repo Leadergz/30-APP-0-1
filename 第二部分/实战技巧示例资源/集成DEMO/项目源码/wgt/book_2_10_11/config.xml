@@ -1,0 +1,16 @@
+ <widget id="A0000000001011"  version="0.0.1">
+    <name>极光推送</name>
+    <description>
+        Example For APICloud.
+    </description>
+    <author email="pomelo@apicloud.com" href="http://www.apicloud.com">APICloud</author>
+    <content src="index.html" />
+    <access origin="*" />
+    <preference name="pageBounce" value="false"/>
+	<preference name="statusBarAppearance" value="true" />
+	<feature name="ajpush">
+		<param name="channel" value="developer-apicloud" />
+		<param name="app_key" value="此处替换为你的APP在极光申请的key" />
+	</feature>
+
+</widget>

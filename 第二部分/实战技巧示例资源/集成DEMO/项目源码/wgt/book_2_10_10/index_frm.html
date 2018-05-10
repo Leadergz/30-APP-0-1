@@ -1,0 +1,170 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,shrink-to-fit=no"/>
+  <title>subway</title>
+  <link rel="stylesheet" type="text/css" href="./css/api.css" />
+  <style>
+    #rootWarp{
+      position: absolute;
+      top: 0;
+      left: 0;
+      right:0;
+      bottom: 0;
+      font-size: 0;
+    }
+    #cityList,#lineList,#stopsList{
+      width: 30vw;
+      max-height: 100%;
+      overflow: scroll;
+      display: inline-block;
+      border-right: 1px solid #999;
+      border-left: 1px solid #999;
+      vertical-align: top;
+      font-size: initial;
+      margin-left: -1px;
+    }
+    .option{
+      text-align: center;
+      padding: .5rem 0;
+      border-bottom: 1px solid #999;
+    }
+    .select{
+      background-color: #ddd;
+    }
+    .loading_more #cityList,.loading_more #lineList,.loading_more #stopsList {
+        display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="subway" style="display:none"></div>
+  <div id="rootWarp" class="loading_more">
+    <div id="cityList">
+      <p :class="{'select':code == curAdCode}" class="option" v-for="(city,code) in cityList" v-text="city.name" @click="clickCity(code)"></p>
+    </div>
+    <div id="lineList">
+      <p class="option" v-for="line in lineList" :style="{'color':'#'+line.color}" v-text="line.name" @click="clickLine(line)"></p>
+    </div>
+    <div id="stopsList">
+      <p class="option" v-for="stops in stopsList" v-text="stops.name" @click="clickStops(stops)"></p>
+    </div>
+  </div>
+</body>
+<script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript" src="./script/vue.min.js"></script>
+<script src="http://webapi.amap.com/subway?v=1.0&amp;key=9feff502898463669771829844c1b6e4&amp;callback=cbk"></script>
+<script type="text/javascript">
+
+    var oSubWay;          // 高德地铁图对象
+    var rootVue;          // vue实例化对象
+
+    apiready = function() {
+        fnInitVue();
+        fnInitSubWay();
+    }
+
+    function fnInitVue() {  // 初始化Vue对象
+        rootVue = new Vue({
+            el: '#rootWarp',
+            data: {
+                      cityList: [],     // 地铁城市列表
+                      lineList: [],     // 地铁线路列表
+                      stopsList: [],    // 地铁站点列表
+                      curAdCode: 1100   // 地铁城市编码
+                  },
+            methods: {
+                clickCity: fnClickCity,          // 地铁城市点击事件
+                clickLine: fnClickSubWayLine,    // 地铁线路点击事件
+                clickStops: fnClickkSubWayStops  // 地铁站点点击事件
+            }
+        });
+    }
+
+    function fnInitSubWay() { // 高德地铁图初始化
+        oSubWay = subway("subway",{easy:1}); // 初始化一下JavaScript高德地铁图对象
+        oSubWay.event.on("subway.complete", function () {     // 加入城市改变后的回调
+            api.hideProgress();
+            oSubWay.getLineList(function(ret){ // 获取城市地铁线路
+                rootVue.lineList = ret;
+            })
+        });
+        oSubWay.getCityList(function(ret){  // 获取全国地铁城市列表
+            rootVue.cityList = ret;
+            $api.removeCls($api.byId('rootWarp'), 'loading_more');
+
+        })
+    }
+
+    function fnClickCity(pCode) {  // 城市点击事件
+        rootVue.stopsList = []
+        api.showProgress();
+        rootVue.curAdCode = pCode;
+        oSubWay.setAdcode(pCode)
+    }
+
+    function fnClickSubWayLine(pLine) { // 地铁线路点击事件
+        api.showProgress();
+        var aMap = api.require('aMap');
+        var tCityName = rootVue.cityList[rootVue.curAdCode].name;
+        aMap.searchBusRoute({
+            city: tCityName,                           // 城市名称
+            line: pLine.name,                          // 地铁线路名称
+            offset: 50,
+            page: 1
+        }, function(ret, err) {
+            console.log('获取的地图结果 ret=='+JSON.stringify(ret)+'___err=='+JSON.stringify(err));
+            if (ret && ret.status && ret.buslines && ret.buslines.length) {
+                var lineKeys = [];
+                var lineData = [];
+                ret.buslines.forEach(function(lineObj){  // 对获取结果进行数据过滤
+                    if('地铁' == lineObj.type){
+                        lineKeys.push(lineObj.name)
+                        lineData.push(lineObj.busStops)
+                    }
+                })
+                //实测同一条线路名称，可能存在多个地铁线路（比如地铁延长线的存在），所以需要弹出一个sheet界面,
+                //将结果二次显示出来，由用户选择最终想查看的路线线路站点信息
+                api.hideProgress();
+                api.actionSheet({
+                    title:'请选择具体线路',
+                    cancelTitle: '取消',
+                    buttons: lineKeys
+                }, function(ret, err) {
+                    var index = ret.buttonIndex;
+                    if(lineData[index-1]){
+                        rootVue.stopsList = lineData[index-1]
+                    }
+                });
+            }else{
+                api.alert({
+                    title: '系统提示',
+                    msg: '没有找到地铁线路，请重试',
+                }, function(ret, err){
+
+                });
+            }
+        });
+    }
+
+    function fnClickkSubWayStops(pStops) { // 地铁站点点击事件
+        if('[object Object]' !== Object.prototype.toString.call(pStops)) {
+            return;
+        }
+        var tMsg = '';
+        for(var tKey in pStops) {
+            tMsg += tKey + ': ' + pStops[tKey] + '\n';
+        }
+        api.alert({
+            title: '地铁站点信息',
+            msg: tMsg,
+        }, function(ret, err){
+
+        });
+    }
+
+</script>
+</html>
