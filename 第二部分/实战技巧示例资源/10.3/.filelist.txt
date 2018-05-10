@@ -1,0 +1,13 @@
+/A6067415406673/icon/icon150x150.png
+/A6067415406673/index.html
+/A6067415406673/css/api.css
+/A6067415406673/script/public.js
+/A6067415406673/script/api.js
+/A6067415406673/image/loading_more.gif
+/A6067415406673/image/ic_arrow_left.png
+/A6067415406673/image/ic_forward.png
+/A6067415406673/image/ic_refresh.png
+/A6067415406673/config.xml
+/A6067415406673/html/remote_html.html
+/A6067415406673/launch/launch1080x1920.png
+/A6067415406673/image/ic_back.png
