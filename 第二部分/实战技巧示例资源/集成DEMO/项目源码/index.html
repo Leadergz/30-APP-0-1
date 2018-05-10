@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>入口页</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css" />
+    <style type="text/css">
+    html,body{
+        height: 100%;
+    }
+    header {
+        position: relative;
+        font-size: 18px;
+        line-height: 44px;
+        text-align: center;
+        background-color: #81a9c3;
+    		color: #fff;
+    }
+    footer {
+        font-size: 14px;
+        line-height: 30px;
+        text-align: center;
+        background-color: #81a9c3;
+        color: #FFF;
+    }
+    </style>
+</head>
+<body class="flex-v">
+    <header>APICloud书籍 第二部分 配套DEMO</header>
+    <section class="flex-1"></section>
+    <footer>Copyright &copy;<span id="year"></span></footer>
+</body>
+<script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript">
+    apiready = function(){
+        var header = $api.dom('header');
+        var headerH = $api.fixStatusBar(header);
+        var footer = $api.dom('footer');
+    		var footerH = $api.fixTabBar(footer);
+        api.openFrame({
+            name: 'main',
+            url: 'html/main.html',
+            rect: {
+                marginTop: headerH,
+                marginBottom: footerH,
+                w: 'auto',
+            }
+        });
+
+        var year = $api.byId('year');
+        year.innerHTML = new Date().getFullYear();
+
+    };
+
+
+</script>
+</html>

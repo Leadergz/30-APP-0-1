@@ -1,0 +1,87 @@
+ <widget id="A6062583133285"  version="0.0.1">
+
+    <name>书籍范例2</name>
+
+    <description>
+
+        《30天 App开发从0到1》 APICloud移动开发实战书籍第二部分配套示范DEMO集成.
+
+    </description>
+
+    <author email="pomelo@apicloud.com" href="http://www.apicloud.com">APICloud</author>
+
+    <content src="index.html" />
+
+    <access origin="*" />
+
+    <preference name="pageBounce" value="false"/>
+
+	<preference name="appBackground" value="rgba(0,0,0,0.0)"/>
+
+	<preference name="windowBackground" value="rgba(0,0,0,0.0)"/>
+
+	<preference name="frameBackgroundColor" value="rgba(0,0,0,0.0)"/>
+
+	<preference name="hScrollBarEnabled" value="false"/>
+
+	<preference name="vScrollBarEnabled" value="false"/>
+
+	<preference name="autoLaunch" value="true"/>
+
+	<preference name="fullScreen" value="false"/>
+
+	<preference name="autoUpdate" value="true" />
+
+	<preference name="smartUpdate" value="false" />
+
+	<preference name="debug" value="true"/>
+
+	<preference name="statusBarAppearance" value="true"/>
+
+	<permission name="readPhoneState" />
+
+	<permission name="camera" />
+
+	<permission name="record" />
+
+	<permission name="location" />
+
+	<permission name="fileSystem" />
+
+	<permission name="internet" />
+
+	<permission name="bootCompleted" />
+
+	<permission name="hardware" />
+
+  <feature name="aMap">
+
+    <param name="android_api_key" value="858cc41ad440439e14834cf34f506db1" />
+
+    <param name="ios_api_key" value="d7294f7a4599f177e617dedeaf695fd5" />
+
+  </feature>
+
+  <feature name="ajpush">
+
+		<param name="channel" value="developer-apicloud" />
+
+		<param name="app_key" value="2c0a9ec98e3a4b056ccffc3f" />
+
+	</feature>
+  <feature name="doubleBarChart"></feature>
+  <feature name="UILineChart"></feature>
+  <feature name="signature"></feature>
+  <feature name="UIBarChart"></feature>
+  <feature name="UIButton"></feature>
+  <feature name="fs"></feature>
+  <feature name="pieChart"></feature>
+  <feature name="UIChatBox"></feature>
+  <feature name="UIInput"></feature>
+  <feature name="photoBrowser"></feature>
+  <feature name="UIScrollPicture"></feature>
+  <feature name="UILinkedPicker"></feature>
+  <feature name="UICustomPicker"></feature>
+  <feature name="signature"></feature>
+
+</widget>

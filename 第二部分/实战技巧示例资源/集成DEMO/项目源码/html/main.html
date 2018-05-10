@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"/>
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>目录页面</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+  	<style>
+        html,body {
+            height: 100%;
+            font-size: 100px;
+        }
+        body {
+            font-size: 16px;
+        }
+
+    		ul{
+      			margin: 0 0.15rem;
+    		}
+    		li{
+    		    position: relative;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+      		  width: 100%;
+            line-height: 0.4rem;
+            font-size: 0.15rem;
+      			color: #333;
+    		}
+        .content {
+            margin-left: 0.1rem;
+        }
+        .item:before {
+            content: attr(data-index);
+            display: inline-block;
+            margin-right: 0.1rem;
+        }
+        li:after {
+            content: '';
+            display: block;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 1px;
+            width: 100%;
+            background-color: #DEDEDE;
+            -webkit-transform: scaleY(.5);
+            transform: scaleY(.5);
+            -webkit-transform-origin: left bottom;
+            transform-origin: left bottom;
+        }
+
+        .title {
+            font-size: 0.16rem;
+            font-weight: bold;
+        }
+  	</style>
+</head>
+<body>
+    <ul id="container">
+        <li class="title">第8章：如何与众不同</li>
+        <li class="item" data-index="8.1" tapmode="active" onclick="fnClickItem('8_1',this)">自定义样式的日期选择器</li>
+        <li class="item" data-index="8.2" tapmode="active" onclick="fnClickItem('8_2',this)">自定义样式的三级联动城市选择器</li>
+        <li class="item" data-index="8.3" tapmode="active" onclick="fnClickItem('8_3',this)">实现固定不动的下拉筛选菜单</li>
+        <li class="item" data-index="8.4" tapmode="active" onclick="fnClickItem('8_4',this)">滑动页面动态改变导航条颜色</li>
+        <li class="item" data-index="8.5" tapmode="active" onclick="fnClickItem('8_5',this)">实现高斯模糊的背景图片</li>
+        <li class="item" data-index="8.6" tapmode="active" onclick="fnClickItem('8_6',this)">0.5px细线的实现</li>
+        <li class="title">第9章：深入挖掘API潜力</li>
+        <li class="item" data-index="9.1" tapmode="active" onclick="fnClickItem('9_1',this)">Frame 的各种场景应用</li>
+        <li class="item" data-index="9.2" tapmode="active" onclick="fnClickItem('9_2',this)">使用UIScrollPicture模块开发引导页</li>
+        <li class="item" data-index="9.3" tapmode="active" onclick="fnClickItem('9_3',this)">使用photoBrowser模块实现自定义样式的图片浏览功能</li>
+        <li class="item" data-index="9.4" tapmode="active" onclick="fnClickItem('9_4',this)">使用UIInput模块实现自定义搜索界面</li>
+        <li class="item" data-index="9.5" tapmode="active" onclick="fnClickItem('9_5',this)">使用UIChatBox模块实现聊天界面</li>
+        <li class="item" data-index="9.6" tapmode="active" onclick="fnClickItem('9_6',this)">如何用api.ajax调用接口</li>
+        <li class="title">第10章：超级实用技巧</li>
+        <li class="item" data-index="10.1" tapmode="active" onclick="fnClickItem('10_1',this)"> 如何让页面兼容有虚拟按键的Android手机</li>
+        <li class="item" data-index="10.2" tapmode="active" onclick="fnClickItem('10_2',this)"> 获取手机验证码功能实现</li>
+        <li class="item" data-index="10.3" tapmode="active" onclick="fnClickItem('10_3',this)"> 打开一个外部链接作为页面，并设置样式以及事件监听</li>
+        <li class="item" data-index="10.4" tapmode="active" onclick="fnClickItem('10_4',this)"> 实现更换皮肤功能</li>
+        <li class="item" data-index="10.5" tapmode="active" onclick="fnClickItem('10_5',this)"> 实现多语言切换功能</li>
+        <li class="item" data-index="10.6" tapmode="active" onclick="fnClickItem('10_6',this)"> 调用任意App</li>
+        <li class="item" data-index="10.7" tapmode="active" onclick="fnClickItem('10_7',this)"> 数据表格的快速开发</li>
+        <li class="item" data-index="10.8" tapmode="active" onclick="fnClickItem('10_8',this)"> apiready与的window.onload平衡使用</li>
+        <li class="item" data-index="10.9" tapmode="active" onclick="fnClickItem('10_9',this)"> 在地图上添加自定义按钮</li>
+        <li class="item" data-index="10.10" tapmode="active" onclick="fnClickItem('10_10',this)"> 如何获取城市地铁线路列表</li>
+        <li class="item" data-index="10.11" tapmode="active" onclick="fnClickItem('10_11',this)"> 五步实现极光推送</li>
+        <li class="title">第11章：性能优化探索</li>
+        <li class="item" data-index="11.1" tapmode="active" onclick="fnClickItem('11_1',this)"> 用imageCache缓存图片</li>
+        <li class="item" data-index="11.2" tapmode="active" onclick="fnClickItem('11_2',this)"> 数据不要从dom上取</li>
+        <li class="item" data-index="11.3" tapmode="active" onclick="fnClickItem('11_3',this)"> 流畅的用户登录体验</li>
+        <li class="item" data-index="11.4" tapmode="active" onclick="fnClickItem('11_4',this)"> 合理使用同步/异步接口</li>
+    </ul>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+
+    apiready = function(){
+
+    };
+
+    // function fnClickItem(pPath,pEl) { // 单元点击方法，打开子wgt包
+    //     var tPath = 'widget://wgt/book_2_'+pPath;
+    //     var tTitle = pEl.innerText;
+    //     api.openWidget({
+    //         path: tPath,
+    //         wgtParam: {
+    //             title: tTitle
+    //         }
+    //     }, function(ret, err){
+    //         console.log('【openWidget callback】：ret=='+JSON.stringify(ret)+'___err=='+JSON.stringify(err));
+    //     });
+    // }
+
+    function fnClickItem(pPath,pEl) { // 单元点击方法，打开新的Win
+        var tPath = 'widget://wgt/book_2_'+pPath+'/index.html';
+        var tTitle = pEl.innerText;
+        api.openWin({
+            name: pPath,
+            url: tPath,
+            pageParam: {
+                title: tTitle
+            }
+        });
+    }
+
+</script>
+</html>
