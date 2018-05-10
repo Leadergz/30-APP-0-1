@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="./css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="./css/style.css"/>
+		<style>
+			header{
+				height: 44px;
+				line-height: 44px;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="border-b">聊天界面</header>
+	</body>
+</html>
+<script type="text/javascript" src="script/api.js"></script>
+<script type="text/javascript">
+	apiready = function() {
+		$api.fixStatusBar($api.dom("header"));
+		openFrame();
+		fnOpenUIChatBox();
+	}
+	function openFrame() {
+		api.openFrame({
+			name : 'chat_frame',
+			url : 'html/chat_frame.html',
+			rect : {
+				y : $api.dom('header').offsetHeight,
+				h : api.winHeight - $api.dom('header').offsetHeight
+			},
+			pageParam : api.pageParam
+		});
+	}
+
+	function fnOpenUIChatBox() {
+		var UIChatBox = api.require('UIChatBox');
+		UIChatBox.open({
+			emotionPath : 'widget://res/emotion',
+			texts : {
+				recordBtn : {
+					normalTitle : '按住 说话',
+					activeTitle : '松开 结束'
+				},
+				sendBtn : {
+					title : '发送'
+				}
+			},
+			styles : {
+				emotionBtn : {
+				},
+				extrasBtn : {
+					normalImg : 'widget://image/chat/chat_add.png'
+				},
+				inputBar : {
+					borderColor : '#dddddd',
+					bgColor : '#FFF'
+				},
+				speechBtn : {
+					normalImg : 'widget://image/chat/chat_voice.png'
+				},
+				recordBtn : {
+					normalBg : 'widget://image/chat/chat_record.png',
+					activeBg : 'widget://image/chat/chat_record.png',
+					color : '#6d6d6d',
+					size : 13
+				},
+				keyboardBtn : {
+				},
+			},
+			extras : {
+				titleSize : 13,
+				titleColor : '#888888',
+				btns : [{
+					title : '照片',
+					normalImg : 'widget://image/chat/chat_ablum.png'
+				}, {
+					title : '拍摄',
+					normalImg : 'widget://image/chat/chat_camera.png'
+				}]
+			}
+		}, function(ret, err) {
+			if (ret.eventType == "send") {
+			} else if (ret.eventType == "show") {
+				inputListener();
+				addChatRecordLis();
+			} else if (ret.eventType == "clickExtras") {
+				if (ret.index == 0) {
+					clickSelectPicture("album");
+				} else {
+					clickSelectPicture("camera");
+				}
+			}
+		});
+	}
+	
+	function inputListener() {
+			var UIChatBox = api.require('UIChatBox');
+			UIChatBox.addEventListener({
+				target : 'inputBar',
+				name : 'move'
+			}, function(ret, err) {
+				uz_log(ret, true);
+				if (ret) {
+					h1 = ret.inputBarHeight;
+					h2 = ret.panelHeight;
+					var systemType = api.systemType;
+					if (systemType == "ios") {
+						resetFrameAttr(h1 + h2);
+					}else {
+						resetFrameAttr(h1 + h2 + 15);
+					}
+				} else {
+					alert(JSON.stringify(err));
+				}
+			});
+			UIChatBox.addEventListener({
+				target : 'inputBar',
+				name : 'change'
+			}, function(ret, err) {
+				uz_log(ret, true);
+				if (ret) {
+					h1 = ret.inputBarHeight;
+					h2 = ret.panelHeight;
+					var systemType = api.systemType;
+					if (systemType == "ios") {
+						resetFrameAttr(h1 + h2);
+					}else {
+						resetFrameAttr(h1 + h2 + 15);
+					}
+				} else {
+					alert(JSON.stringify(err));
+				}
+			});
+		}
+		
+		var h1;
+		var h2;
+		function resetFrameAttr(h) {
+			api.setFrameAttr({
+				name : 'chat_frame',
+				rect : {
+					x : 0,
+					y : $api.dom('header').offsetHeight,
+					h : api.winHeight - $api.dom('header').offsetHeight - h + 10
+				}
+			});
+			api.execScript({
+				frameName : 'chat_frame',
+				script : 'scrollToBottom();'
+			});
+		}
+</script>
