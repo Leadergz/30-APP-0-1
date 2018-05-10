@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>图片浏览器</title>
+		<link rel="stylesheet" type="text/css" href="css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="css/style.css"/>
+		<style>
+			header {
+					height: 44px;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+		</header>
+	</body>
+	<script type="text/javascript" src="script/api.js"></script>
+	<script type="text/javascript">
+		var picturesName = ["APICloud官网首页", "文档", "开发者社区", "模块库", "云编译"];
+		var activeIndex = 2;
+		apiready = function() {
+			fnOpenPhotoBroswer();
+		};
+		function fnBuildImages() {
+			var images = [];
+			images.push("http://7zdttd.com1.z0.glb.clouddn.com/apicloud/7835a3f931a793f95a526c7772483de1.png");
+			images.push("http://7zdtte.com1.z0.glb.clouddn.com/apicloud/7835a3f931a793f95a526c7772483de1.png");
+			images.push("http://7zdttf.com1.z0.glb.clouddn.com/apicloud/a14c9d4fa1847707b2ab1403c8205d36.png");
+			images.push("http://7zdttf.com1.z0.glb.clouddn.com/apicloud/3f34c6f8b4bc921b832a1356e58c565c.png");
+			images.push("http://7zdttf.com1.z0.glb.clouddn.com/apicloud/11d1fba1e70a28ce9179a6799f2fba6b.png");
+			return images;
+		}
+
+		//打开photoBrowser模块
+		function fnOpenPhotoBroswer() {
+			var photoBrowser = api.require('photoBrowser');
+			photoBrowser.open({
+				images : fnBuildImages(), //要展示的图片路径数组
+				bgColor : '#FFF',		  //设置背景色
+				activeIndex : activeIndex //设置当前要显示的图片的索引
+			}, function(ret, err) {
+				if (ret.eventType == "show") {//当模块打开时，打开一个frame做标题栏
+					fnOpenHeader();
+				} else if (ret.eventType == "change") {//当切换浏览的图片时，改变标题栏frame中显示的值
+					fnSetTitle(ret.index);
+				}
+			});
+		}
+
+		//改变标题栏中显示的值
+		function fnSetTitle(index) {
+			api.execScript({
+				frameName : 'show_picture_header',
+				script : 'fnSetTitle("' + picturesName[index] + '",' + index + ');'
+			});
+		}
+
+		//打开一个frame做标题栏
+		function fnOpenHeader() {
+			//此header的用途是设置frame的高度
+			var header = $api.dom('header');
+			var headerH = $api.fixStatusBar(header);
+			api.openFrame({
+				name : 'show_picture_header',
+				url : 'html/show_picture_header.html',
+				rect : {
+					y : api.pageParam.headerHeight,
+					h : headerH   	//设置标题栏的高度
+				},
+				pageParam : {
+					pictureName : picturesName[activeIndex],
+					pictureSum : 5,
+					activeIndex : activeIndex
+				}
+			});
+		}
+	</script>
+</html>
