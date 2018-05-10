@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>Hello APP</title>
+		<link rel="stylesheet" type="text/css" href="./css/api.css" />
+		<style type="text/css">
+			.c_search {
+				position: absolute;
+				width: 100%;
+				height: 100px;
+				top: 40%;
+				margin-top: -50px;
+				text-align: center;
+				line-height: 100px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="c_search" tapmode onclick="fnOpenSearchWin()">
+			点击进入搜索页面
+		</div>
+	</body>
+	<script type="text/javascript" src="./script/api.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			
+		};
+		
+		function fnOpenSearchWin(){
+			api.openWin({
+	            name: 'search',
+	            url: 'html/search.html'
+            });
+		}
+	</script>
+</html>
