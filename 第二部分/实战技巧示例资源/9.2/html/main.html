@@ -1,0 +1,176 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>Hello APP</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+        html,
+        body {
+            height: 100%;
+            display: flex;
+            display: -webkit-flex;
+            display: -webkit-box;
+            flex-flow: column;
+            -webkit-flex-flow: column;
+            -webkit-box-orient: vertical;
+        }
+
+        .header {
+            width: 100%;
+            height: 44px;
+            line-height: 44px;
+            color: #009af0;
+            background-color: #fff;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        section {
+            background-color: #f1f3f7;
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            overflow: auto;
+        }
+
+        .scrollPicture {
+            width: 100%;
+            height: 225px;
+        }
+
+        .content {
+            padding: 10px;
+            word-wrap: break-word;
+            word-break: normal;
+        }
+
+        .footer {
+            width: 100%;
+            height: 49px;
+            line-height: 49px;
+            color: #009af0;
+            background-color: #fff;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">UIScrollPicture模块Demo</div>
+    <section class="content">
+        <div class="scrollPicture"></div>
+        <div class="content">
+            UIScrollPicture 是一个图片轮播模块，只需传入一组图片地址，即可实现图片轮播效果。<br /> open 接口内的 rect 参数，可控制图片轮播区域的位置和大小。styles 参数可以设置轮播视图底部的标题文字大小及颜色，亦可设置底部页面控制器（几个小圆点）的位置和样式。<br /> 有些应用的头条新闻或广告轮播展示都是无限循环自动播放的，本模块亦可以实现相同的功能，可通过open 接口内的 loop 和 auto 参数控制。每张图片自动轮播时的时间间隔也可自定义，用
+            interval 即可。为了让原生模块真正的嵌入的网页内，让开发者像使用 js 库一样使用原生模块，APICloud 平台特开放了 fixedOn、fixed 参数。通过配置以上两个参数，可实现让轮播视图随 html 页面上下滚动的功能。<br /> 本图片轮播器是由原生代码开发，对于网络图片的展示更加人性化。模块内部会做缓存处理，第一次加载网络图片时，模块会根据其路径生成一个 md5 加密的图片名，并缓存在缓存文件夹里。当用户下次打开同路径的图片时，模块直接从缓存文件内读取该图片，从而大大节省了用户流量。开发者可以通过调用
+            clearCache 接口清楚本模块在本地缓存的图片资源，调用 api.clearCache 接口会清除本 APP 在本地缓存的所有文件。由于原生代码相对前端代码的高效性，本模块相对于前端实现的图片轮播功能更加流畅，内存管理更加优化。当用户需要展示多张图片时，其内存只保留三张图片的地址，然后来回切换图片内容，从而降低了整个 app 内存占用率。具体模块功能请参考模块接口。
+        </div>
+    </section>
+    <div class="footer" tapmode onclick="fnClearCache();">重新初始化引导页</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+    var vHeaderHeight;
+    apiready = function() {
+        fnInitPage();
+        fnInitScrollPicture();
+    };
+
+    //页面初始化
+    function fnInitPage() {
+        //开启沉浸式效果
+        var header = $api.dom('.header');
+        $api.fixStatusBar(header);
+        vHeaderHeight = $api.offset(header).h;
+        api.addEventListener({
+            name: 'keyback'
+        }, function(ret, err){
+            api.toast({
+                    msg: '再按一次返回键退出'+api.appName,
+                    duration:2000,
+                    location: 'bottom'
+                });
+              api.addEventListener({
+                  name: 'keyback'
+              }, function(ret, err){
+                  api.closeWidget({
+                    silent:true
+                  });
+              });
+              setTimeout(function(){
+                  fnInitPage();
+              },2000)
+        });
+    }
+
+    //初始化轮播图模块
+    function fnInitScrollPicture() {
+        var UIScrollPicture = api.require('UIScrollPicture');
+        UIScrollPicture.open({
+            rect: {
+                x: 0,
+                y: vHeaderHeight,
+                w: api.winWidth,
+                h: 225
+            },
+            data: {
+                paths: [
+                    'widget://res/pic1.jpg',
+                    'widget://res/pic1.jpg',
+                    'widget://res/pic1.jpg',
+                    'widget://res/pic1.jpg'
+                ],
+                captions: ['apicloud1', 'apicloud2', 'apicloud3', 'apicloud4']
+            },
+            styles: {
+                caption: {
+                    height: 35,
+                    color: '#E0FFFF',
+                    size: 13,
+                    bgColor: '#696969',
+                    position: 'bottom'
+                },
+                indicator: {
+                    align: 'center',
+                    color: '#FFFFFF',
+                    activeColor: '#DA70D6'
+                }
+            },
+            placeholderImg: 'widget://res/slide1.jpg',
+            contentMode: 'scaleToFill',
+            interval: 3,
+            fixedOn: api.frameName,
+            loop: true,
+            fixed: false
+        }, function(ret, err) {
+            // if (ret) {
+            //     alert(JSON.stringify(ret));
+            // } else {
+            //     alert(JSON.stringify(err));
+            // }
+        });
+    }
+
+    function fnClearCache() {
+        api.removePrefs({
+            key: 'isFirst'
+        });
+        api.confirm({
+            title: '系统提示',
+            msg: '引导页恢复初始化成功，是否重启APP',
+            buttons: ['确定', '取消']
+        }, function(ret, err){
+            if( ret && 1 == ret.buttonIndex ){
+                api.rebootApp();
+            }
+        });
+
+
+    }
+</script>
+
+</html>
