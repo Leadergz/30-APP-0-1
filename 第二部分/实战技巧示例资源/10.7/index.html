@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"
+    />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>Hello APP</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css" />
+    <style type="text/css">
+        html,
+        body {
+            height: 100%;
+            color: #FFF;
+            text-align: center;
+        }
+
+        header {
+            height: 44px;
+            background-color: #E0474C;
+            font-size: 18px;
+            line-height: 44px;
+        }
+
+        section {
+            margin-top: 30px;
+        }
+
+        .button {
+            margin: 10px 20px;
+            height: 44px;
+            background-color: #03a9f4;
+            font-size: 16px;
+            line-height: 44px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body class="flex-box flex-column">
+    <header>APICloud Frame 应用范例</header>
+    <section class="flex-1">
+        <div class="button" tapmode="button-tapmode" onclick="openWin('module');">打开模块图表</div>
+        <div class="button" tapmode="button-tapmode" onclick="openWin('echarts');">打开Echarts图表</div>
+    </section>
+</body>
+<script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript">
+
+    apiready = function () {
+        // 沉浸式状态栏修复
+        var eHeader = $api.dom('header');
+        $api.fixStatusBar(eHeader);
+        // 设置keyback键点击事件
+        addKeyBackMethod();
+    };
+
+    var backTouched = false; // keyback 键点击状态
+    function addKeyBackMethod() {
+        // 设置 keyback 双击退出APP
+        api.addEventListener({
+            name: 'keyback'
+        }, function (ret, err) {
+            if (backTouched) {
+                // 执行退出
+                api.closeWidget({
+                    silent: true // 静默退出
+                });
+            }
+            else {
+                backTouched = true;
+                api.toast({
+                    msg: '再按一次退出APP',
+                    duration: 2000,
+                    location: 'bottom'
+                });
+                setTimeout(function () {
+                    backTouched = false;
+                }, 2000);
+            }
+        });
+    }
+
+    //打开模块图表示例
+    function openWin(name) {
+        api.openWin({
+            name: name,
+            url: './html/' + name + '/index.html',
+            slidBackType: 'edge'
+        });
+    }
+</script>
+
+</html>
