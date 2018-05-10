@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"
+    />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>APICloud Frame 获取验证码示例</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css" />
+    <style type="text/css">
+        html,
+        body {
+            height: 100%;
+            color: #FFF;
+            text-align: center;
+        }
+
+        header {
+            height: 44px;
+            background-color: #E0474C;
+            font-size: 18px;
+            line-height: 44px;
+        }
+
+        section {
+            padding-top: 30px;
+        }
+
+        .button {
+            margin: 10px 20px;
+            height: 44px;
+            background-color: #03a9f4;
+            font-size: 16px;
+            line-height: 44px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>APICloud Frame 获取验证码示例</header>
+    <section class="flex-1">
+        <div class="button" tapmode="button-tapmode" onclick="openLoginFrame();">打开获取验证码窗口</div>
+    </section>
+</body>
+<script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript">
+    apiready = function () {
+        // 沉浸式状态栏修复
+        var eHeader = $api.dom('header');
+        $api.fixStatusBar(eHeader);
+    };
+
+    function openLoginFrame() { //打开登陆页面
+        api.openFrame({
+            name: 'register_frm',
+            url: './html/register_frm.html',
+            rect: {
+                marginTop: 0,
+                marginBottom: 0,
+                w: 'auto',
+                h: 'auto'
+            },
+            softInputBarEnabled: false,
+            animation: {
+                type: "movein",
+                subType: "from_bottom",
+                duration: 300
+            },
+            pageParam: {
+                cb_win: api.winName,
+                init_fun: 'setDisableBackMethod'
+            }
+        });
+    }
+</script>
+
+</html>
