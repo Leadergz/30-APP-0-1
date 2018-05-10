@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+        <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+        <title>title</title>
+        <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+        <style>
+            body {
+            }
+            #list {
+            }
+            #list .item {
+                background: lightgreen;
+                margin: 3px;
+                border-radius: 3px;
+                height: 40px;
+                line-height: 40px;
+            }
+        </style>
+    </head>
+    <body>
+        <ul id="list">
+            <li class="item" tapmode onclick="fnPost()">
+                post 请求
+            </li>
+            <li class="item" tapmode onclick="fnGet()">
+                get 请求
+            </li>
+            <li class="item" tapmode onclick="fnUpload()">
+                上传图片
+            </li>
+        </ul>
+    </body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/sha1.js"></script>
+    <script type="text/javascript">
+        function mountHeaders(flag) {
+            // var appid = api.appId;
+            var appid = 'A6062673439536';
+            var now = Date.now();
+            var appKey = SHA1(appid + 'UZ' + '9C1A9055-BC83-355E-2D47-72B38399027E' + 'UZ' + now) + '.' + now;
+            var result = {
+                'X-APICloud-AppId' : appid,
+                'X-APICloud-AppKey' : appKey
+            }
+            if (flag && flag == 'json') {
+                result['Content-Type'] = 'application/json'
+            }
+            return result;
+        }
+
+        apiready = function() {
+            
+        };
+        function fnGet() {
+            var headers = mountHeaders();
+            api.ajax({
+                url : 'https://d.apicloud.com/mcm/api/test?filter=' + JSON.stringify({where:{name:'test date'}, limit:3,skip:0}),
+                headers : headers,
+                method : 'get',
+                cache: true
+            }, function(ret, err) {
+                //your codes
+                if (ret) {
+                    api.toast({
+                        msg : JSON.stringify(ret),
+                        location : 'middle'
+                    });
+                }
+                if (err) {
+                    api.toast({
+                        msg : JSON.stringify(err),
+                        location : 'bottom'
+                    });
+                }
+            });
+        }
+
+        function fnPost() {
+            var headers = mountHeaders();
+            api.ajax({
+                url : 'https://d.apicloud.com/mcm/api/test',
+                method : 'post',
+                headers : headers,
+                data : {
+                    values : {
+                        tags : ['a', 'b', 'c']
+                    }
+                }
+            }, function(ret, err) {
+                //your codes
+                if (ret) {
+                    api.toast({
+                        msg : JSON.stringify(ret),
+                        location : 'middle'
+                    });
+                }
+                if (err) {
+                    api.toast({
+                        msg : JSON.stringify(err),
+                        location : 'bottom'
+                    });
+                }
+            });
+        }
+        function fnUpload() {
+            api.getPicture({
+            }, function(ret, err) {
+                //coding...
+                if (ret.data) {
+                    fnUploadToMcm(ret.data)
+                }
+            });
+        }
+
+        function fnUploadToMcm(filepath) {
+            var headers = mountHeaders();
+            api.ajax({
+                url : 'https://d.apicloud.com/mcm/api/file',
+                method : 'post',
+                dataType : 'json',
+                headers : headers,
+                report : true, // 在上传文件的时候，report设置为true，会有实时返回上传文件进度的功能
+                data : {
+                    values : {
+                        filename : 'file' + Date.now() + '.png'
+                    },
+                    files : {
+                        file : filepath
+                    }
+                }
+            }, function(ret, err) {
+                //coding...
+                if (ret) {
+                    if (ret.status == 1) {
+                        // todos
+                        api.toast({
+                            msg : '完成',
+                            location : 'middle'
+                        });
+                    }
+                    if (ret.status == 0) {
+                        api.toast({
+                            msg : '上传进度：' + ret.progress + '%',
+                            location : 'middle'
+                        });
+                    }
+                    if (ret.status == 2) {
+                        api.toast({
+                            msg : JSON.stringify(ret),
+                            location : 'middle'
+                        });
+                    }
+                    /*
+                     *{
+                     *  progress: 100, // 上传进度，0.00-100.00
+                     *    status: '', // 上传状态，数字类型。（0：上传中、1：上传完成、2：上传失败）
+                     *    body: '' // 上传完成时，服务器返回的数据
+                     *}
+                     */
+                }
+                if (err) {
+                    api.toast({
+                        msg : JSON.stringify(err),
+                        location : 'bottom'
+                    });
+                }
+            });
+        }
+    </script>
+</html>
