@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css"/>
+    <style>
+    	body{
+    		
+    	}
+    	header{
+    	   background: #81a9c3;
+    	}
+    	.btn{
+    	   width: 50px;
+    	   height: 50px;
+    	   text-align: center;
+    	   line-height: 50px;
+    	   font-size: 14px;
+    	   color: #ffffff;
+    	}
+    	.headershadow{
+    	   height: 50px;
+    	}
+    	.back{
+    	   float: left;
+    	}
+    	.fakeheader{
+    	   height: 40px;
+    	   background: #eeeeee;
+    	   line-height: 40px;
+    	   font-size: 13px;
+    	}
+    </style>
+</head>
+<body>
+	<header>
+	   <div class="headershadow">
+	       <div class="btn back" tapmode onclick="api.closeWin()"> 返回 </div>
+	   </div>
+	   <div class="fakeheader" tapmode onclick="toggleFrame()">点击打开筛选菜单</div>
+	</header>
+</body>
+<script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript">
+    var header = $api.dom('header');
+    var fakeheader = $api.dom('.fakeheader');
+	apiready = function(){
+	   $api.fixStatusBar(header);
+	   var headerPos = $api.offset(header);
+	   console.log(JSON.stringify(headerPos))
+		api.openFrame({
+	        name: 'main',
+	        url: './html/main.html',
+	        rect: {
+		        marginTop: headerPos.h,
+		        marginBottom: 0,
+		        marginLeft: 0,
+		        marginRight: 0
+	        }
+        });
+        api.openFrame({
+            name: 'frame2',
+            url: './html/frame2.html',
+            rect: {
+                marginTop: headerPos.h,
+                marginBottom: 0,
+                marginLeft: api.winWidth,
+                marginRight: 0
+            },
+            bounces: false, // 菜单页面不需要弹动的效果
+            bgColor: 'rgba(0,0,0,0.3)' // 淡淡的遮罩层
+        });
+	};
+	var isOpen = false
+	function toggleFrame(){
+        if(isOpen){
+            api.setFrameAttr({
+	            name: 'frame2',
+	            hidden: true
+            });
+            isOpen = false;
+            $api.text(fakeheader, '点击打开筛选菜单');
+        } else {
+            api.setFrameAttr({
+                name: 'frame2',
+                hidden: false
+            });
+            isOpen = true;
+            $api.text(fakeheader, '点击关闭筛选菜单');
+        }
+    }
+</script>
+</html>
